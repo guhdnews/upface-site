@@ -51,49 +51,41 @@ export default function Services() {
   return (
     <Layout title="Services - Upface">
       {/* Hero Section */}
-      <div className="content-block">
-        <div className="section-container">
-          <div className="text-center py-8">
-            <h1 className="text-5xl lg:text-6xl font-light text-white mb-8">Services</h1>
-            <p className="text-xl text-gray-400 font-light max-w-3xl mx-auto">
-              Comprehensive digital solutions designed to transform your local business and drive growth.
-            </p>
-          </div>
+      <section className="section section--black">
+        <div className="section-container text-center">
+          <h1>Services</h1>
+          <p className="text-large">
+            Comprehensive digital solutions designed to transform your local business and drive growth.
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Services */}
       {services.map((service) => (
-        <div key={service.title} className="two-column">
+        <section key={service.title} className="two-column">
           <div className="column-left">
-            <h2 className="text-5xl font-light text-white mb-6">{service.title}</h2>
-            <p className="text-lg text-gray-300 font-light leading-relaxed mb-8">
+            <h2>{service.title}</h2>
+            <p className="text-large mb-lg">
               {service.description}
             </p>
-            <h3 className="text-2xl font-light text-white mb-6">What we deliver</h3>
-            <ul className="space-y-4 text-gray-300 mb-8">
+            <h3>What we deliver</h3>
+            <ul className="mb-lg">
               {service.features.map((feature, idx) => (
-                <li key={idx} className="flex items-start">
-                  <span className="text-white mr-4">•</span>
-                  {feature}
-                </li>
+                <li key={idx}>{feature}</li>
               ))}
             </ul>
           </div>
           <div className="column-right">
-            <h3 className="text-2xl font-light text-black mb-6">Our process</h3>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+            <h3>Our process</h3>
+            <p className="text-large mb-lg">
               {service.process}
             </p>
-            <Link 
-              href="/contact" 
-              className="btn-dark inline-flex items-center"
-            >
+            <Link href="/contact" className="btn btn-dark">
               {service.cta}
               <ArrowRight className="ml-2" size={20} />
             </Link>
           </div>
-        </div>
+        </section>
       ))}
     </Layout>
   );

@@ -15,57 +15,53 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-black border-b border-gray-800">
-      <nav className="section-container">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo - properly positioned */}
-          <Link href="/" className="text-white text-2xl font-light tracking-tight">
+    <header className="site-header">
+      <div className="section-container">
+        <nav className="header-nav">
+          {/* Logo */}
+          <Link href="/" className="header-logo">
             Upface
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
-            <Link
-              href="/services"
-              className="text-gray-400 hover:text-white transition-colors font-light text-lg"
-            >
-              Services
-            </Link>
-            <Link
-              href="/packages"
-              className="text-gray-400 hover:text-white transition-colors font-light text-lg"
-            >
-              Packages
-            </Link>
-            <Link
-              href="/demos"
-              className="text-gray-400 hover:text-white transition-colors font-light text-lg"
-            >
-              Work
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-400 hover:text-white transition-colors font-light text-lg"
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-400 hover:text-white transition-colors font-light text-lg"
-            >
-              Contact
-            </Link>
-          </div>
+          <ul className="header-menu">
+            <li>
+              <Link href="/services" className="header-menu-link">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link href="/packages" className="header-menu-link">
+                Packages
+              </Link>
+            </li>
+            <li>
+              <Link href="/demos" className="header-menu-link">
+                Work
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className="header-menu-link">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="header-menu-link">
+                Contact
+              </Link>
+            </li>
+          </ul>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-400 hover:text-white transition-colors"
+            className="mobile-menu-toggle"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
-      </nav>
+        </nav>
+
+      </div>
 
       {/* Mobile Navigation */}
       <AnimatePresence>
@@ -74,21 +70,21 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black border-b border-gray-800"
+            className="mobile-menu"
           >
-            <div className="section-container py-6">
-              <div className="space-y-4">
+            <div className="section-container">
+              <nav className="mobile-menu-list">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="block text-gray-400 hover:text-white transition-colors font-light text-lg py-2"
+                    className="mobile-menu-link"
                   >
                     {item.name}
                   </Link>
                 ))}
-              </div>
+              </nav>
             </div>
           </motion.div>
         )}

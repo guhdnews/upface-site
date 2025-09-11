@@ -29,39 +29,31 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <div className="hero-section">
-        <div className="section-container">
-          <div className="text-center py-24 lg:py-32">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight leading-tight max-w-5xl mx-auto">
-              Digital solutions
-              <br />
-              for local business
-            </h1>
-            
-            <p className="text-xl lg:text-2xl text-gray-400 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
-              We build exceptional digital experiences for restaurants, construction companies, and service businesses.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-              <Link
-                href="/contact"
-                className="btn-primary"
-              >
-                Get Started
-              </Link>
-              <Link
-                href="/demos"
-                className="btn-secondary"
-              >
-                View Work
-              </Link>
-            </div>
+      <section className="section--hero section--black">
+        <div className="section-container text-center">
+          <h1>
+            Digital solutions
+            <br />
+            for local business
+          </h1>
+          
+          <p className="text-large mb-2xl">
+            We build exceptional digital experiences for restaurants, construction companies, and service businesses.
+          </p>
+          
+          <div className="btn-group">
+            <Link href="/contact" className="btn btn-primary">
+              Get Started
+            </Link>
+            <Link href="/demos" className="btn btn-secondary">
+              View Work
+            </Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Value Propositions */}
-      <div className="feature-grid">
+      <section className="feature-grid">
         {[
           {
             title: 'Lightning Fast',
@@ -77,44 +69,36 @@ export default function Home() {
           }
         ].map((feature, index) => (
           <div key={index} className="feature-card">
-            <h3 className="text-3xl font-light text-white mb-6">{feature.title}</h3>
-            <p className="text-lg text-gray-400 font-light leading-relaxed">{feature.description}</p>
+            <h3>{feature.title}</h3>
+            <p className="text-large">{feature.description}</p>
           </div>
         ))}
-      </div>
+      </section>
 
       {/* Our Work Section */}
-      <div className="content-block">
+      <section className="section section--black">
         <div className="section-container">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl lg:text-6xl font-light text-white mb-8">Our Work</h2>
-            <p className="text-xl text-gray-400 font-light max-w-3xl mx-auto">
+          <div className="text-center mb-2xl">
+            <h2>Our Work</h2>
+            <p className="text-large">
               Real solutions for real businesses
             </p>
           </div>
           
-          <div className="space-y-0">
+          <div>
             {demoProjects.map((project, index) => (
               <div key={index} className="two-column">
                 <div className="column-left">
-                  <h3 className="text-4xl font-light text-white mb-6">
-                    {project.title}
-                  </h3>
-                  <p className="text-lg text-gray-400 font-light mb-8 leading-relaxed">
+                  <h3>{project.title}</h3>
+                  <p className="text-large mb-lg">
                     {project.description}
                   </p>
-                  <div className="space-y-3 mb-8">
+                  <ul className="mb-lg">
                     {project.features.map((feature, idx) => (
-                      <div key={idx} className="text-gray-300 font-light flex items-center">
-                        <span className="text-white mr-4">•</span>
-                        {feature}
-                      </div>
+                      <li key={idx}>{feature}</li>
                     ))}
-                  </div>
-                  <Link
-                    href="/demos"
-                    className="btn-primary"
-                  >
+                  </ul>
+                  <Link href="/demos" className="btn btn-primary">
                     View Project
                   </Link>
                 </div>
@@ -128,35 +112,27 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* CTA Section */}
-      <div className="content-block-white">
-        <div className="section-container">
-          <div className="text-center">
-            <h2 className="text-5xl lg:text-6xl font-light text-black mb-8">
-              Ready to get started?
-            </h2>
-            <p className="text-xl text-gray-600 mb-12 font-light max-w-3xl mx-auto">
-              Let&apos;s build something exceptional together.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-              <Link
-                href="/contact"
-                className="btn-dark"
-              >
-                Start a Project
-              </Link>
-              <Link
-                href="/packages"
-                className="bg-transparent border-2 border-black text-black px-8 py-4 font-medium hover:bg-black hover:text-white transition-colors inline-flex items-center justify-center min-w-[160px] min-h-[52px]"
-              >
-                View Packages
-              </Link>
-            </div>
+      <section className="section section--white">
+        <div className="section-container text-center">
+          <h2>
+            Ready to get started?
+          </h2>
+          <p className="text-large mb-2xl">
+            Let&apos;s build something exceptional together.
+          </p>
+          <div className="btn-group">
+            <Link href="/contact" className="btn btn-dark">
+              Start a Project
+            </Link>
+            <Link href="/packages" className="btn btn-dark">
+              View Packages
+            </Link>
           </div>
         </div>
-      </div>
+      </section>
     </Layout>
   );
 }

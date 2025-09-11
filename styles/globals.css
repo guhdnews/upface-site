@@ -1,183 +1,599 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ==========================================================================
+   UPFACE DESIGN SYSTEM - COMPLETE CSS FRAMEWORK
+   ========================================================================== */
+
+/* 1. CSS CUSTOM PROPERTIES - SPACING SCALE */
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --gray: #666666;
-  --border: #333333;
+  /* Colors */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-100: #f5f5f5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  --color-border: #333333;
+  --color-border-light: #dddddd;
+  
+  /* Systematic Spacing Scale */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 128px;
+  
+  /* Container & Layout */
+  --container-max-width: 1200px;
+  --container-padding: clamp(20px, 4vw, 60px);
+  --header-height: 80px;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  
+  /* Component Dimensions */
+  --button-min-height: 48px;
+  --button-min-width: 120px;
+  --button-padding: 16px 32px;
+  --touch-target-min: 44px;
 }
 
-* {
+/* 2. CSS RESET & BASE STYLES */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+html {
+  font-size: 16px;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-family);
+  line-height: var(--line-height-normal);
+  color: var(--color-white);
+  background-color: var(--color-black);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
-/* Standard Container System */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 3. UNIVERSAL CONTAINER SYSTEM */
+.container,
 .section-container {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-@media (min-width: 640px) {
-  .section-container {
-    padding: 0 2rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .section-container {
-    padding: 0 3rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .section-container {
-    padding: 0 4rem;
-  }
-}
-
-/* Standard Section Layouts */
-.content-block {
-  background: black;
-  border: 1px solid #333;
-  padding: 5rem 0;
-  margin: 0;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
   width: 100%;
 }
 
-.content-block-white {
-  background: white;
-  color: black;
-  border: 1px solid #ddd;
-  padding: 5rem 0;
-  margin: 0;
-  width: 100%;
+/* 4. SECTION SPACING FRAMEWORK */
+.section {
+  padding: var(--space-2xl) 0;
 }
 
-@media (min-width: 768px) {
-  .content-block,
-  .content-block-white {
-    padding: 6rem 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .content-block,
-  .content-block-white {
-    padding: 8rem 0;
-  }
-}
-
-/* Hero Section */
-.hero-section {
-  background: black;
-  border: 1px solid #333;
+.section--hero {
+  padding: var(--space-3xl) 0;
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
-/* Feature Grid System */
+.section--large {
+  padding: var(--space-4xl) 0;
+}
+
+.section--small {
+  padding: var(--space-xl) 0;
+}
+
+/* Buffer zones between sections */
+.section + .section {
+  border-top: 1px solid var(--color-border);
+}
+
+.section--white + .section--white {
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* 5. TYPOGRAPHY SYSTEM */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: var(--space-lg);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--space-md);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-bottom: var(--space-md);
+  line-height: var(--line-height-relaxed);
+}
+
+.text-large {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  line-height: var(--line-height-relaxed);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Lists with proper spacing */
+ul, ol {
+  margin-bottom: var(--space-md);
+}
+
+li {
+  margin-bottom: var(--space-xs);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+li::before {
+  content: '•';
+  color: currentColor;
+  flex-shrink: 0;
+  width: 1em;
+}
+
+/* 6. SPACING UTILITIES */
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mb-2xl { margin-bottom: var(--space-2xl); }
+
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+.py-xs { padding: var(--space-xs) 0; }
+.py-sm { padding: var(--space-sm) 0; }
+.py-md { padding: var(--space-md) 0; }
+.py-lg { padding: var(--space-lg) 0; }
+.py-xl { padding: var(--space-xl) 0; }
+.py-2xl { padding: var(--space-2xl) 0; }
+
+/* 7. LAYOUT SECTIONS */
+.content-block,
+.section--black {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-top: 1px solid var(--color-border);
+}
+
+.content-block-white,
+.section--white {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.hero-section {
+  background: var(--color-black);
+  color: var(--color-white);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+}
+
+/* 8. BUTTON SYSTEM */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-min-height);
+  min-width: var(--button-min-width);
+  padding: var(--button-padding);
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn-primary {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.btn-secondary:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+.btn-dark {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.btn-dark:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+/* Button spacing */
+.btn + .btn {
+  margin-left: var(--space-md);
+}
+
+.btn-group {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 9. GRID SYSTEMS */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 0;
-  width: 100%;
-  border: 1px solid #333;
+  border: 1px solid var(--color-border);
 }
 
 .feature-card {
-  background: black;
-  border-right: 1px solid #333;
-  border-bottom: 1px solid #333;
-  padding: 3rem 2rem;
-  text-align: left;
-  color: white;
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--color-black);
+  color: var(--color-white);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.feature-card:last-child,
-.feature-card:nth-child(3n) {
+.feature-card:last-child {
   border-right: none;
 }
 
 .feature-card-white {
-  background: white;
-  color: black;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 3rem 2rem;
-  text-align: left;
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--color-white);
+  color: var(--color-black);
+  border-right: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
 }
 
-@media (min-width: 768px) {
-  .feature-card,
-  .feature-card-white {
-    padding: 4rem 2.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .feature-card,
-  .feature-card-white {
-    padding: 4rem 3rem;
-  }
-}
-
-/* Two Column Layout */
 .two-column {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0;
-  border: 1px solid #333;
+  border: 1px solid var(--color-border);
 }
 
 .column-left {
-  padding: 3rem 2rem;
-  background: black;
-  border-right: 1px solid #333;
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--color-black);
+  color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .column-right {
-  padding: 3rem 2rem;
-  background: white;
-  color: black;
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--color-white);
+  color: var(--color-black);
 }
 
 @media (min-width: 768px) {
+  .two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .column-left {
+    border-right: 1px solid var(--color-border);
+    border-bottom: none;
+  }
+  
+  .feature-card,
+  .feature-card-white,
   .column-left,
   .column-right {
-    padding: 4rem 2.5rem;
+    padding: var(--space-2xl) var(--space-xl);
   }
 }
 
-@media (min-width: 1024px) {
-  .column-left,
-  .column-right {
-    padding: 6rem 4rem;
+/* 10. HEADER SYSTEM */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--color-black);
+  border-bottom: 1px solid var(--color-border);
+  min-height: var(--header-height);
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-height);
+}
+
+.header-logo {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--color-white);
+  text-decoration: none;
+  letter-spacing: -0.025em;
+}
+
+.header-menu {
+  display: none;
+  align-items: center;
+  gap: var(--space-xl);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-menu-link {
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 1.125rem;
+  transition: color 0.2s ease;
+  padding: var(--space-sm) 0;
+}
+
+.header-menu-link:hover {
+  color: var(--color-white);
+}
+
+.mobile-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  color: var(--color-gray-400);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-black);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-lg) 0;
+}
+
+.mobile-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.mobile-menu-link {
+  color: var(--color-gray-400);
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 300;
+  padding: var(--space-sm) 0;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-link:hover {
+  color: var(--color-white);
+}
+
+@media (min-width: 768px) {
+  .header-menu {
+    display: flex;
   }
+  
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
+/* 11. MAIN CONTENT OFFSET */
+.main-content {
+  padding-top: calc(var(--header-height) + var(--space-md));
+}
+
+/* 12. FORM SYSTEM */
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 1px solid var(--color-gray-700);
+  transition: border-color 0.2s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--color-gray-500);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-white);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .form-grid--two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 13. MOBILE RESPONSIVENESS */
+@media (max-width: 767px) {
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-card:last-child {
+    border-bottom: none;
+  }
+  
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  
+  .section {
+    padding: var(--space-xl) 0;
+  }
+  
+  .section--hero {
+    padding: var(--space-2xl) 0;
+    min-height: 90vh;
+  }
+}
+
+/* 14. UTILITY CLASSES */
+.max-width-sm { max-width: 400px; margin: 0 auto; }
+.max-width-md { max-width: 600px; margin: 0 auto; }
+.max-width-lg { max-width: 800px; margin: 0 auto; }
+.max-width-xl { max-width: 1000px; margin: 0 auto; }
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-600);
+}
+
+/* 15. ANIMATION & TRANSITIONS */
+.btn,
+.header-menu-link,
+.mobile-menu-link,
+.form-input,
+.form-textarea,
+.form-select {
+  transition: all 0.2s ease;
+}
+
+/* 16. FOCUS STATES FOR ACCESSIBILITY */
+.btn:focus,
+.header-menu-link:focus,
+.mobile-menu-link:focus {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+.btn-dark:focus {
+  outline: 2px solid var(--color-black);
+  outline-offset: 2px;
 }
 
 /* Service Sections */

@@ -102,9 +102,9 @@ export default function Layout({
           </Script>
         </>
       )}
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen bg-black text-white">
         <Header />
-        <main className="pt-24">
+        <main className="main-content">
           {children}
         </main>
         <Footer />
