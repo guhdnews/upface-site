@@ -29,29 +29,29 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <div className="content-block" style={{ minHeight: '100vh', paddingTop: '8rem', paddingBottom: '4rem' }}>
-        <div className="section-container flex items-center justify-center h-full">
-          <div className="text-center">
-            <h1 className="text-7xl md:text-9xl font-light text-white mb-12 tracking-tight leading-tight">
+      <div className="hero-section">
+        <div className="section-container">
+          <div className="text-center py-24 lg:py-32">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight leading-tight max-w-5xl mx-auto">
               Digital solutions
               <br />
               for local business
             </h1>
             
-            <p className="text-2xl text-gray-400 mb-16 font-light leading-relaxed max-w-4xl mx-auto">
+            <p className="text-xl lg:text-2xl text-gray-400 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
               We build exceptional digital experiences for restaurants, construction companies, and service businesses.
             </p>
             
-            <div className="flex justify-center gap-6">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
               <Link
                 href="/contact"
-                className="btn-primary inline-block text-center"
+                className="btn-primary"
               >
                 Get Started
               </Link>
               <Link
                 href="/demos"
-                className="btn-secondary inline-block text-center"
+                className="btn-secondary"
               >
                 View Work
               </Link>
@@ -86,14 +86,14 @@ export default function Home() {
       {/* Our Work Section */}
       <div className="content-block">
         <div className="section-container">
-          <div className="text-center mb-24">
-            <h2 className="text-6xl font-light text-white mb-8">Our Work</h2>
-            <p className="text-2xl text-gray-400 font-light max-w-3xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl lg:text-6xl font-light text-white mb-8">Our Work</h2>
+            <p className="text-xl text-gray-400 font-light max-w-3xl mx-auto">
               Real solutions for real businesses
             </p>
           </div>
           
-          <div className="space-y-16">
+          <div className="space-y-0">
             {demoProjects.map((project, index) => (
               <div key={index} className="two-column">
                 <div className="column-left">
@@ -113,7 +113,7 @@ export default function Home() {
                   </div>
                   <Link
                     href="/demos"
-                    className="btn-primary inline-block"
+                    className="btn-primary"
                   >
                     View Project
                   </Link>
@@ -134,22 +134,22 @@ export default function Home() {
       <div className="content-block-white">
         <div className="section-container">
           <div className="text-center">
-            <h2 className="text-6xl font-light text-black mb-8">
+            <h2 className="text-5xl lg:text-6xl font-light text-black mb-8">
               Ready to get started?
             </h2>
-            <p className="text-2xl text-gray-600 mb-16 font-light">
+            <p className="text-xl text-gray-600 mb-12 font-light max-w-3xl mx-auto">
               Let&apos;s build something exceptional together.
             </p>
-            <div className="flex justify-center gap-6">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
               <Link
                 href="/contact"
-                className="btn-dark inline-block text-center"
+                className="btn-dark"
               >
                 Start a Project
               </Link>
               <Link
                 href="/packages"
-                className="bg-transparent border-2 border-black text-black px-8 py-4 font-medium hover:bg-black hover:text-white transition-colors inline-block text-center"
+                className="bg-transparent border-2 border-black text-black px-8 py-4 font-medium hover:bg-black hover:text-white transition-colors inline-flex items-center justify-center min-w-[160px] min-h-[52px]"
               >
                 View Packages
               </Link>

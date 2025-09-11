@@ -53,9 +53,9 @@ export default function Services() {
       {/* Hero Section */}
       <div className="content-block">
         <div className="section-container">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-light text-white mb-8">Services</h1>
-            <p className="text-2xl text-gray-400 font-light max-w-4xl mx-auto">
+          <div className="text-center py-8">
+            <h1 className="text-5xl lg:text-6xl font-light text-white mb-8">Services</h1>
+            <p className="text-xl text-gray-400 font-light max-w-3xl mx-auto">
               Comprehensive digital solutions designed to transform your local business and drive growth.
             </p>
           </div>

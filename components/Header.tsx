@@ -16,15 +16,15 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 w-full z-50 bg-black border-b border-gray-800">
-      <nav className="w-full max-w-7xl mx-auto px-8">
-        <div className="flex justify-center items-center h-20 relative">
-          {/* Logo - positioned absolute left */}
-          <Link href="/" className="absolute left-0 text-white text-2xl font-light">
+      <nav className="section-container">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo - properly positioned */}
+          <Link href="/" className="text-white text-2xl font-light tracking-tight">
             Upface
           </Link>
 
-          {/* Desktop Navigation - centered */}
-          <div className="hidden md:flex items-center space-x-12">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
             <Link
               href="/services"
               className="text-gray-400 hover:text-white transition-colors font-light text-lg"
@@ -76,17 +76,19 @@ export default function Header() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-black border-b border-gray-800"
           >
-            <div className="px-8 py-8 space-y-6">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-gray-400 hover:text-white transition-colors font-light text-lg"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            <div className="section-container py-6">
+              <div className="space-y-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block text-gray-400 hover:text-white transition-colors font-light text-lg py-2"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}

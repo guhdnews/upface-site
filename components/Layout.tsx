@@ -104,7 +104,7 @@ export default function Layout({
       )}
       <div className="min-h-screen bg-background text-foreground">
         <Header />
-        <main className="pt-20">
+        <main className="pt-24">
           {children}
         </main>
         <Footer />
