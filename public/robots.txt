@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://upface.dev/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin
+Disallow: /login
