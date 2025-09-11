@@ -71,7 +71,7 @@ export default function Packages() {
           </div>
           
           <div className="space-y-16">
-            {packages.map((pkg, index) => (
+            {packages.map((pkg) => (
               <div key={pkg.name} className="border border-gray-800 max-w-5xl mx-auto">
                 <div className="p-12">
                   <div className="text-center mb-12">

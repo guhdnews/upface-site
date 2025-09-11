@@ -55,7 +55,7 @@ export default function Demos() {
           <div className="text-center">
             <h1 className="text-6xl md:text-8xl font-light text-white mb-8">Our Work</h1>
             <p className="text-2xl text-gray-400 font-light max-w-4xl mx-auto">
-              Real solutions for real businesses. See how we've helped local companies transform their digital presence.
+              Real solutions for real businesses. See how we&apos;ve helped local companies transform their digital presence.
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function Demos() {
           <div className="text-center">
             <h2 className="text-5xl font-light text-black mb-8">Ready to build something amazing?</h2>
             <p className="text-xl text-gray-600 font-light mb-12 max-w-3xl mx-auto">
-              Every project is unique. Let's discuss how we can create a custom solution for your business.
+              Every project is unique. Let&apos;s discuss how we can create a custom solution for your business.
             </p>
             <Link
               href="/contact"

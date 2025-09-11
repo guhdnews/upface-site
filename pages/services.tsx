@@ -63,7 +63,7 @@ export default function Services() {
       </div>
 
       {/* Services */}
-      {services.map((service, index) => (
+      {services.map((service) => (
         <div key={service.title} className="two-column">
           <div className="column-left">
             <h2 className="text-5xl font-light text-white mb-6">{service.title}</h2>

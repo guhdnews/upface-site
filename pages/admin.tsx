@@ -28,8 +28,8 @@ const mockFreelancers = [
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('crm');
-  const [clients, setClients] = useState(mockClients);
-  const [freelancers, setFreelancers] = useState(mockFreelancers);
+  const [clients] = useState(mockClients);
+  const [freelancers] = useState(mockFreelancers);
   
   const { user, signOut } = useAuth();
   const router = useRouter();

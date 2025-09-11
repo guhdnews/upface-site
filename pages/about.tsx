@@ -84,7 +84,7 @@ export default function About() {
           </div>
           
           <div className="feature-grid">
-            {principles.map((principle, index) => (
+            {principles.map((principle) => (
               <div key={principle.title} className="feature-card">
                 <h3 className="text-3xl font-light text-white mb-6">{principle.title}</h3>
                 <p className="text-lg text-gray-300 font-light leading-relaxed">{principle.description}</p>
@@ -105,7 +105,7 @@ export default function About() {
           </div>
           
           <div className="max-w-4xl mx-auto space-y-12">
-            {timeline.map((item, index) => (
+            {timeline.map((item) => (
               <div key={item.title} className="flex items-start">
                 <div className="flex-shrink-0 w-24 text-right mr-8">
                   <span className="text-lg font-medium text-gray-500">{item.year}</span>
