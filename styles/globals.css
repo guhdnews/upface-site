@@ -2,10 +2,11 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   UPFACE DESIGN SYSTEM - COMPLETE CSS FRAMEWORK
+   UPFACE DESIGN SYSTEM - COMPLETE CSS FRAMEWORK OVERHAUL
+   Modern Tech Company Design Inspired by x.ai, Linear, Stripe
    ========================================================================== */
 
-/* 1. CSS CUSTOM PROPERTIES - SPACING SCALE */
+/* 1. FOUNDATION RESET & BASE SYSTEM */
 :root {
   /* Colors */
   --color-black: #000000;
@@ -21,19 +22,23 @@
   --color-border: #333333;
   --color-border-light: #dddddd;
   
-  /* Systematic Spacing Scale */
-  --space-xs: 8px;
-  --space-sm: 16px;
-  --space-md: 24px;
-  --space-lg: 32px;
-  --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 128px;
+  /* 8px BASE UNIT SPACING SYSTEM */
+  --space-0: 0;
+  --space-1: 8px;   /* xs */
+  --space-2: 16px;  /* sm */
+  --space-3: 24px;  /* md */
+  --space-4: 32px;  /* lg */
+  --space-5: 40px;  /* xl */
+  --space-6: 48px;  /* 2xl */
+  --space-7: 56px;  /* 3xl */
+  --space-8: 64px;  /* 4xl */
+  --space-10: 80px; /* 5xl */
+  --space-12: 96px; /* 6xl */
   
-  /* Container & Layout */
-  --container-max-width: 1200px;
-  --container-padding: clamp(20px, 4vw, 60px);
+  /* UNIVERSAL LAYOUT SYSTEM */
+  --container-padding: clamp(24px, 5vw, 80px);
+  --content-max-width: 1200px;
+  --section-spacing: clamp(64px, 8vw, 120px);
   --header-height: 80px;
   
   /* Typography */
@@ -42,7 +47,7 @@
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.6;
   
-  /* Component Dimensions */
+  /* Component Standards */
   --button-min-height: 48px;
   --button-min-width: 120px;
   --button-padding: 16px 32px;
@@ -98,70 +103,72 @@ img {
   display: block;
 }
 
-/* 3. UNIVERSAL CONTAINER SYSTEM */
-.container,
-.section-container {
-  max-width: var(--container-max-width);
+/* 3. UNIVERSAL CONTAINER & LAYOUT SYSTEM */
+.container {
+  padding: 0 var(--container-padding);
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding-left: var(--container-padding);
-  padding-right: var(--container-padding);
   width: 100%;
 }
 
-/* 4. SECTION SPACING FRAMEWORK */
-.section {
-  padding: var(--space-2xl) 0;
+/* Alias for consistency - both work the same */
+.section-container {
+  padding: 0 var(--container-padding);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* 4. SECTION SPACING STANDARDIZATION */
+.section {
+  padding: var(--section-spacing) 0;
+}
+
+.section + .section {
+  border-top: 1px solid rgba(0,0,0,0.08); /* subtle separation */
+}
+
+/* Section variants */
 .section--hero {
-  padding: var(--space-3xl) 0;
+  padding: var(--section-spacing) 0;
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
 .section--large {
-  padding: var(--space-4xl) 0;
+  padding: calc(var(--section-spacing) * 1.5) 0;
 }
 
 .section--small {
-  padding: var(--space-xl) 0;
-}
-
-/* Buffer zones between sections - Remove automatic borders */
-.section + .section {
-  /* Remove automatic borders - handle manually per section */
-}
-
-.section--white + .section--white {
-  /* Remove automatic borders - handle manually per section */
+  padding: calc(var(--section-spacing) * 0.75) 0;
 }
 
 /* 5. TYPOGRAPHY SYSTEM */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
   line-height: var(--line-height-tight);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-3);
   letter-spacing: -0.025em;
 }
 
 h1 {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-4);
 }
 
 h2 {
   font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-3);
 }
 
 h3 {
   font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-2);
 }
 
 p {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-3);
   line-height: var(--line-height-relaxed);
 }
 
@@ -176,14 +183,14 @@ p {
 
 /* Lists with proper spacing */
 ul, ol {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-3);
 }
 
 li {
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-1);
   display: flex;
   align-items: flex-start;
-  gap: var(--space-sm);
+  gap: var(--space-2);
 }
 
 li::before {
@@ -193,62 +200,70 @@ li::before {
   width: 1em;
 }
 
-/* 6. SPACING UTILITIES */
-.mb-xs { margin-bottom: var(--space-xs); }
-.mb-sm { margin-bottom: var(--space-sm); }
-.mb-md { margin-bottom: var(--space-md); }
-.mb-lg { margin-bottom: var(--space-lg); }
-.mb-xl { margin-bottom: var(--space-xl); }
-.mb-2xl { margin-bottom: var(--space-2xl); }
+/* 6. SPACING UTILITIES - 8px BASE SYSTEM */
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.mb-10 { margin-bottom: var(--space-10); }
+.mb-12 { margin-bottom: var(--space-12); }
 
-.mt-xs { margin-top: var(--space-xs); }
-.mt-sm { margin-top: var(--space-sm); }
-.mt-md { margin-top: var(--space-md); }
-.mt-lg { margin-top: var(--space-lg); }
-.mt-xl { margin-top: var(--space-xl); }
-.mt-2xl { margin-top: var(--space-2xl); }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.mt-10 { margin-top: var(--space-10); }
+.mt-12 { margin-top: var(--space-12); }
 
-.py-xs { padding: var(--space-xs) 0; }
-.py-sm { padding: var(--space-sm) 0; }
-.py-md { padding: var(--space-md) 0; }
-.py-lg { padding: var(--space-lg) 0; }
-.py-xl { padding: var(--space-xl) 0; }
-.py-2xl { padding: var(--space-2xl) 0; }
+.py-1 { padding: var(--space-1) 0; }
+.py-2 { padding: var(--space-2) 0; }
+.py-3 { padding: var(--space-3) 0; }
+.py-4 { padding: var(--space-4) 0; }
+.py-5 { padding: var(--space-5) 0; }
+.py-6 { padding: var(--space-6) 0; }
+.py-8 { padding: var(--space-8) 0; }
+.py-10 { padding: var(--space-10) 0; }
+.py-12 { padding: var(--space-12) 0; }
 
-.p-xs { padding: var(--space-xs); }
-.p-sm { padding: var(--space-sm); }
-.p-md { padding: var(--space-md); }
-.p-lg { padding: var(--space-lg); }
-.p-xl { padding: var(--space-xl); }
-.p-2xl { padding: var(--space-2xl); }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+.p-10 { padding: var(--space-10); }
+.p-12 { padding: var(--space-12); }
 
-.pt-xs { padding-top: var(--space-xs); }
-.pt-sm { padding-top: var(--space-sm); }
-.pt-md { padding-top: var(--space-md); }
-.pt-lg { padding-top: var(--space-lg); }
-.pt-xl { padding-top: var(--space-xl); }
-.pt-2xl { padding-top: var(--space-2xl); }
+.space-y-1 > * + * { margin-top: var(--space-1); }
+.space-y-2 > * + * { margin-top: var(--space-2); }
+.space-y-3 > * + * { margin-top: var(--space-3); }
+.space-y-4 > * + * { margin-top: var(--space-4); }
+.space-y-5 > * + * { margin-top: var(--space-5); }
+.space-y-6 > * + * { margin-top: var(--space-6); }
+.space-y-8 > * + * { margin-top: var(--space-8); }
 
-.pb-xs { padding-bottom: var(--space-xs); }
-.pb-sm { padding-bottom: var(--space-sm); }
-.pb-md { padding-bottom: var(--space-md); }
-.pb-lg { padding-bottom: var(--space-lg); }
-.pb-xl { padding-bottom: var(--space-xl); }
-.pb-2xl { padding-bottom: var(--space-2xl); }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
 
-.space-y-xs > * + * { margin-top: var(--space-xs); }
-.space-y-sm > * + * { margin-top: var(--space-sm); }
-.space-y-md > * + * { margin-top: var(--space-md); }
-.space-y-lg > * + * { margin-top: var(--space-lg); }
-.space-y-xl > * + * { margin-top: var(--space-xl); }
-.space-y-2xl > * + * { margin-top: var(--space-2xl); }
-
-.gap-xs { gap: var(--space-xs); }
-.gap-sm { gap: var(--space-sm); }
-.gap-md { gap: var(--space-md); }
-.gap-lg { gap: var(--space-lg); }
-.gap-xl { gap: var(--space-xl); }
-.gap-2xl { gap: var(--space-2xl); }
+/* Legacy naming support for existing components */
+.mb-xs { margin-bottom: var(--space-1); }
+.mb-sm { margin-bottom: var(--space-2); }
+.mb-md { margin-bottom: var(--space-3); }
+.mb-lg { margin-bottom: var(--space-4); }
+.mb-xl { margin-bottom: var(--space-6); }
+.mb-2xl { margin-bottom: var(--space-8); }
 
 /* 7. LAYOUT SECTIONS */
 .content-block,
@@ -280,7 +295,7 @@ li::before {
   border: 1px solid var(--color-border);
 }
 
-/* 8. BUTTON SYSTEM */
+/* 8. STANDARDIZED BUTTON SYSTEM */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -293,6 +308,7 @@ li::before {
   font-family: inherit;
   text-decoration: none;
   border: 2px solid transparent;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -337,12 +353,12 @@ li::before {
 
 /* Button spacing */
 .btn + .btn {
-  margin-left: var(--space-md);
+  margin-left: var(--space-3);
 }
 
 .btn-group {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-3);
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -356,7 +372,7 @@ li::before {
 }
 
 .feature-card {
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-6) var(--space-4);
   background: var(--color-black);
   color: var(--color-white);
   border-right: 1px solid var(--color-border);
@@ -368,7 +384,7 @@ li::before {
 }
 
 .feature-card-white {
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-6) var(--space-4);
   background: var(--color-white);
   color: var(--color-black);
   border-right: 1px solid var(--color-border-light);
@@ -382,14 +398,14 @@ li::before {
 }
 
 .column-left {
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-6) var(--space-4);
   background: var(--color-black);
   color: var(--color-white);
   border-bottom: 1px solid var(--color-border);
 }
 
 .column-right {
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-6) var(--space-4);
   background: var(--color-white);
   color: var(--color-black);
 }
@@ -408,7 +424,7 @@ li::before {
   .feature-card-white,
   .column-left,
   .column-right {
-    padding: var(--space-2xl) var(--space-xl);
+    padding: var(--space-8) var(--space-6);
   }
 }
 
@@ -442,7 +458,7 @@ li::before {
 .header-menu {
   display: none;
   align-items: center;
-  gap: var(--space-xl);
+  gap: var(--space-6);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -454,7 +470,7 @@ li::before {
   font-weight: 300;
   font-size: 1.125rem;
   transition: color 0.2s ease;
-  padding: var(--space-sm) 0;
+  padding: var(--space-2) 0;
 }
 
 .header-menu-link:hover {
@@ -480,13 +496,13 @@ li::before {
   right: 0;
   background: var(--color-black);
   border-bottom: 1px solid var(--color-border);
-  padding: var(--space-lg) 0;
+  padding: var(--space-4) 0;
 }
 
 .mobile-menu-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-3);
 }
 
 .mobile-menu-link {
@@ -494,7 +510,7 @@ li::before {
   text-decoration: none;
   font-size: 1.125rem;
   font-weight: 300;
-  padding: var(--space-sm) 0;
+  padding: var(--space-2) 0;
   transition: color 0.2s ease;
 }
 
@@ -514,19 +530,19 @@ li::before {
 
 /* 11. MAIN CONTENT OFFSET */
 .main-content {
-  padding-top: calc(var(--header-height) + var(--space-md));
+  padding-top: calc(var(--header-height) + var(--space-3));
 }
 
 /* 12. FORM SYSTEM */
 .form-group {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-3);
 }
 
 .form-input,
 .form-textarea,
 .form-select {
   width: 100%;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-2) var(--space-3);
   font-family: inherit;
   font-size: 1rem;
   background: var(--color-black);
@@ -554,7 +570,7 @@ li::before {
 
 .form-grid {
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-3);
 }
 
 @media (min-width: 640px) {
@@ -563,24 +579,33 @@ li::before {
   }
 }
 
-/* 13. MOBILE RESPONSIVENESS */
-@media (max-width: 767px) {
+/* 13. MOBILE-RESPONSIVE SCALING */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 20px;
+    --section-spacing: 48px;
+  }
+  
   .btn-group {
     flex-direction: column;
     width: 100%;
+    gap: var(--space-2);
   }
   
   .btn {
     width: 100%;
     max-width: 300px;
+    min-height: 44px; /* Touch-friendly sizing */
   }
   
   .feature-grid {
     grid-template-columns: 1fr;
   }
   
-  .feature-card:last-child {
+  .feature-card:last-child,
+  .feature-card-white:last-child {
     border-bottom: none;
+    border-right: none;
   }
   
   h1 {
@@ -588,12 +613,21 @@ li::before {
   }
   
   .section {
-    padding: var(--space-xl) 0;
+    padding: calc(var(--section-spacing) * 0.75) 0;
   }
   
   .section--hero {
-    padding: var(--space-2xl) 0;
+    padding: var(--section-spacing) 0;
     min-height: 90vh;
+  }
+  
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+  
+  .column-left {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
   }
 }
 
@@ -635,17 +669,17 @@ li::before {
   outline-offset: 2px;
 }
 
-/* Service Sections */
+/* 17. SERVICE SECTIONS - UPDATED WITH DESIGN SYSTEM */
 .service-section {
-  border: 1px solid #333;
+  border: 1px solid var(--color-border);
   margin-bottom: 0;
 }
 
 .service-header {
-  background: black;
-  padding: 6rem 0;
+  background: var(--color-black);
+  padding: var(--section-spacing) 0;
   text-align: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .service-content {
@@ -655,116 +689,29 @@ li::before {
 }
 
 .service-details {
-  padding: 6rem 0;
-  background: black;
-  border-right: 1px solid #333;
+  padding: var(--section-spacing) 0;
+  background: var(--color-black);
+  border-right: 1px solid var(--color-border);
 }
 
 .service-process {
-  padding: 6rem 0;
-  background: white;
-  color: black;
+  padding: var(--section-spacing) 0;
+  background: var(--color-white);
+  color: var(--color-black);
 }
 
-/* Professional Button System */
-.btn-primary {
-  background: white;
-  color: black;
-  border: 2px solid white;
-  padding: 1rem 2rem;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-width: 140px;
-  min-height: 48px;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background: black;
-  color: white;
-  border: 2px solid white;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  padding: 1rem 2rem;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-width: 140px;
-  min-height: 48px;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background: white;
-  color: black;
-  border: 2px solid white;
-}
-
-.btn-dark {
-  background: black;
-  color: white;
-  border: 2px solid black;
-  padding: 1rem 2rem;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-width: 140px;
-  min-height: 48px;
-  cursor: pointer;
-}
-
-.btn-dark:hover {
-  background: white;
-  color: black;
-  border: 2px solid black;
-}
-
-@media (min-width: 768px) {
-  .btn-primary,
-  .btn-secondary,
-  .btn-dark {
-    padding: 1.25rem 2.5rem;
-    font-size: 1.1rem;
-    min-width: 160px;
-    min-height: 52px;
-  }
-}
-
-/* Navigation */
+/* 18. NAVIGATION SPACING - DESIGN SYSTEM */
 .nav-item {
-  margin-left: 3rem;
+  margin-left: var(--space-6);
 }
 
 .nav-item:first-child {
   margin-left: 0;
 }
 
-/* Responsive Design - Layout adjustments (padding handled by clamp) */
-@media (max-width: 1024px) {
-  .two-column {
-    grid-template-columns: 1fr;
-  }
-  
-  .column-left {
-    border-right: none;
-    border-bottom: 1px solid #333;
+@media (max-width: 768px) {
+  .nav-item {
+    margin-left: var(--space-3);
   }
   
   .service-content {
@@ -773,21 +720,6 @@ li::before {
   
   .service-details {
     border-right: none;
-    border-bottom: 1px solid #333;
-  }
-}
-
-@media (max-width: 768px) {
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .feature-card,
-  .feature-card-white {
-    border-right: none;
-  }
-  
-  .nav-item {
-    margin-left: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
   }
 }
