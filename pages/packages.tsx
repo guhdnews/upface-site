@@ -61,53 +61,47 @@ export default function Packages() {
 
   return (
     <Layout title="Packages - Upface">
-      <section className="py-32 bg-black">
+      <section className="section section--black">
         <div className="section-container">
-          <div className="text-center mb-24">
-            <h1 className="text-5xl md:text-7xl font-light text-white mb-8">Packages</h1>
-            <p className="text-xl text-gray-400 font-light max-w-3xl mx-auto">
+          <div className="text-center mb-2xl">
+            <h1>Packages</h1>
+            <p className="text-large">
               Transparent, comprehensive solutions tailored to your business size and goals.
             </p>
           </div>
           
-          <div className="space-y-16">
+          <div className="space-y-xl">
             {packages.map((pkg) => (
               <div key={pkg.name} className="border border-gray-800 max-w-5xl mx-auto">
-                <div className="p-12">
-                  <div className="text-center mb-12">
-                    <h2 className="text-4xl font-light text-white mb-4">{pkg.name}</h2>
-                    <p className="text-xl text-gray-400 font-light mb-4">{pkg.description}</p>
-                    <div className="flex justify-center items-center gap-8 text-sm text-gray-500">
+                <div className="p-xl">
+                  <div className="text-center mb-xl">
+                    <h2 className="mb-md">{pkg.name}</h2>
+                    <p className="text-large mb-lg">{pkg.description}</p>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-md text-gray-500">
                       <span>Timeline: {pkg.timeline}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>Ideal for: {pkg.ideal}</span>
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl">
                     <div>
-                      <h3 className="text-2xl font-medium text-white mb-6">What&apos;s included</h3>
-                      <ul className="space-y-4">
+                      <h3 className="mb-lg">What&apos;s included</h3>
+                      <ul className="mb-lg">
                         {pkg.features.map((feature, idx) => (
-                          <li key={idx} className="text-gray-300 font-light flex items-start">
-                            <span className="w-2 h-2 bg-white rounded-full mr-4 mt-3 flex-shrink-0"></span>
-                            {feature}
-                          </li>
+                          <li key={idx}>{feature}</li>
                         ))}
                       </ul>
                     </div>
                     
                     <div className="flex flex-col justify-center items-center text-center">
-                      <div className="mb-8">
-                        <p className="text-gray-400 mb-6 font-light">
+                      <div className="mb-lg">
+                        <p className="text-large mb-lg">
                           Ready to transform your business? Let&apos;s discuss how this package can work for you.
                         </p>
                       </div>
                       
-                      <Link
-                        href="/contact"
-                        className="btn-primary inline-block"
-                      >
+                      <Link href="/contact" className="btn btn-primary">
                         Get Quote
                       </Link>
                     </div>
@@ -116,19 +110,18 @@ export default function Packages() {
               </div>
             ))}
           </div>
-          
-          <div className="text-center mt-24">
-            <h2 className="text-3xl font-light text-white mb-6">Custom Solutions</h2>
-            <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto mb-8">
-              Need something different? We create fully custom solutions tailored to your unique requirements.
-            </p>
-            <Link
-              href="/contact"
-              className="btn-secondary inline-block"
-            >
-              Discuss Custom Project
-            </Link>
-          </div>
+        </div>
+      </section>
+      
+      <section className="section section--white">
+        <div className="section-container text-center">
+          <h2 className="mb-lg">Custom Solutions</h2>
+          <p className="text-large mb-2xl max-w-3xl mx-auto">
+            Need something different? We create fully custom solutions tailored to your unique requirements.
+          </p>
+          <Link href="/contact" className="btn btn-dark">
+            Discuss Custom Project
+          </Link>
         </div>
       </section>
     </Layout>

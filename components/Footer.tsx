@@ -5,31 +5,31 @@ export default function Footer() {
   return (
     <footer className="bg-black border-t border-gray-800">
       <div className="section-container">
-        <div className="py-16 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-8">
+        <div className="py-2xl flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-lg">
           <div className="flex-1">
-            <Link href="/" className="text-white text-xl font-medium mb-6 block">
+            <Link href="/" className="header-logo mb-md block">
               Upface
             </Link>
-            <p className="text-gray-400 font-light max-w-sm mx-auto md:mx-0">
+            <p className="text-gray-400 max-w-sm mx-auto md:mx-0">
               Modern websites and applications for local businesses.
             </p>
           </div>
           
-          <div className="flex gap-12 justify-center">
-            <Link href="/services" className="text-gray-400 hover:text-white transition-colors font-light">
+          <div className="flex gap-xl justify-center">
+            <Link href="/services" className="header-menu-link">
               Services
             </Link>
-            <Link href="/packages" className="text-gray-400 hover:text-white transition-colors font-light">
+            <Link href="/packages" className="header-menu-link">
               Packages
             </Link>
-            <Link href="/contact" className="text-gray-400 hover:text-white transition-colors font-light">
+            <Link href="/contact" className="header-menu-link">
               Contact
             </Link>
           </div>
         </div>
         
-        <div className="py-8 border-t border-gray-800 text-center">
-          <p className="text-gray-500 text-sm font-light">
+        <div className="pt-lg pb-xl border-t border-gray-800 text-center">
+          <p className="text-gray-500 text-sm">
             © 2025 Upface. All rights reserved.
           </p>
         </div>

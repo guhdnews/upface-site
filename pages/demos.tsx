@@ -50,93 +50,82 @@ export default function Demos() {
   return (
     <Layout title="Our Work - Upface">
       {/* Hero Section */}
-      <div className="content-block">
-        <div className="section-container">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-light text-white mb-8">Our Work</h1>
-            <p className="text-2xl text-gray-400 font-light max-w-4xl mx-auto">
-              Real solutions for real businesses. See how we&apos;ve helped local companies transform their digital presence.
-            </p>
-          </div>
+      <section className="section section--black">
+        <div className="section-container text-center">
+          <h1>Our Work</h1>
+          <p className="text-large">
+            Real solutions for real businesses. See how we&apos;ve helped local companies transform their digital presence.
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Projects Grid */}
-      <div className="content-block">
-        <div className="section-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-            {demos.map((demo, index) => (
-              <div key={demo.title} className={`p-12 ${index % 2 === 0 ? 'bg-black border-r border-b border-gray-800' : 'bg-white border-b border-gray-300'}`}>
-                <div className="mb-8">
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center mb-6">
-                    <p className={`text-lg font-light ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {demo.title} Preview
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="space-y-6">
-                  <div>
-                    <p className={`text-sm font-medium mb-2 ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {demo.category}
-                    </p>
-                    <h3 className={`text-3xl font-light mb-4 ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>
-                      {demo.title}
-                    </h3>
-                    <p className={`text-lg font-light leading-relaxed mb-6 ${index % 2 === 0 ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {demo.desc}
-                    </p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    {demo.features.map((feature, idx) => (
-                      <div key={idx} className={`text-sm font-light ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
-                        <span className={`mr-2 ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>•</span>
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mb-8">
-                    <p className={`text-xs font-medium ${index % 2 === 0 ? 'text-gray-500' : 'text-gray-500'}`}>
-                      {demo.tech}
-                    </p>
-                  </div>
-                  
-                  <Link
-                    href="/contact"
-                    className={`inline-block px-8 py-3 font-medium transition-colors ${
-                      index % 2 === 0 
-                        ? 'bg-white text-black hover:bg-gray-100' 
-                        : 'bg-black text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    Discuss Similar Project
-                  </Link>
-                </div>
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+        {demos.map((demo, index) => (
+          <div key={demo.title} className={`p-xl ${index % 2 === 0 ? 'bg-black border-r border-b border-gray-800' : 'bg-white border-b border-gray-300'}`}>
+            <div className="mb-lg">
+              <div className="aspect-video mb-lg">
+                <p className={`text-lg text-center ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {demo.title} Preview
+                </p>
               </div>
-            ))}
+            </div>
+            
+            <div className="space-y-md">
+              <div>
+                <p className={`text-sm font-medium mb-sm ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {demo.category}
+                </p>
+                <h3 className={`mb-md ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>
+                  {demo.title}
+                </h3>
+                <p className={`text-large mb-lg ${index % 2 === 0 ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {demo.desc}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-sm mb-lg">
+                {demo.features.map((feature, idx) => (
+                  <div key={idx} className={`text-sm ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <span className={`mr-sm ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>•</span>
+                    {feature}
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mb-lg">
+                <p className={`text-xs ${index % 2 === 0 ? 'text-gray-500' : 'text-gray-500'}`}>
+                  {demo.tech}
+                </p>
+              </div>
+              
+              <Link
+                href="/contact"
+                className={`btn ${
+                  index % 2 === 0 
+                    ? 'btn-primary' 
+                    : 'btn-dark'
+                }`}
+              >
+                Discuss Similar Project
+              </Link>
+            </div>
           </div>
-        </div>
-      </div>
+        ))}
+      </section>
 
       {/* CTA Section */}
-      <div className="content-block-white">
-        <div className="section-container">
-          <div className="text-center">
-            <h2 className="text-5xl font-light text-black mb-8">Ready to build something amazing?</h2>
-            <p className="text-xl text-gray-600 font-light mb-12 max-w-3xl mx-auto">
-              Every project is unique. Let&apos;s discuss how we can create a custom solution for your business.
-            </p>
-            <Link
-              href="/contact"
-              className="btn-dark inline-block"
-            >
-              Start Your Project
-            </Link>
-          </div>
+      <section className="section section--white">
+        <div className="section-container text-center">
+          <h2 className="mb-lg">Ready to build something amazing?</h2>
+          <p className="text-large mb-2xl max-w-3xl mx-auto">
+            Every project is unique. Let&apos;s discuss how we can create a custom solution for your business.
+          </p>
+          <Link href="/contact" className="btn btn-dark">
+            Start Your Project
+          </Link>
         </div>
-      </div>
+      </section>
     </Layout>
   );
 }
