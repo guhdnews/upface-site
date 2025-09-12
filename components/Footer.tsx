@@ -13,12 +13,21 @@ export default function Footer() {
             Modern websites and applications for local businesses.
           </p>
           
-          <div className="flex gap-6 justify-center mb-8">
+          <div className="flex flex-wrap gap-6 justify-center mb-8">
             <Link href="/services" className="header-menu-link">
               Services
             </Link>
             <Link href="/packages" className="header-menu-link">
               Packages
+            </Link>
+            <Link href="/demos" className="header-menu-link">
+              Work
+            </Link>
+            <Link href="/about" className="header-menu-link">
+              About
+            </Link>
+            <Link href="/faq" className="header-menu-link">
+              FAQ
             </Link>
             <Link href="/contact" className="header-menu-link">
               Contact
