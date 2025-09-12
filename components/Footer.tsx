@@ -5,17 +5,15 @@ export default function Footer() {
   return (
     <footer className="bg-black border-t border-gray-800">
       <div className="section-container">
-        <div className="py-2xl flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-lg">
-          <div className="flex-1">
-            <Link href="/" className="header-logo mb-md block">
-              Upface
-            </Link>
-            <p className="text-gray-400 max-w-sm mx-auto md:mx-0">
-              Modern websites and applications for local businesses.
-            </p>
-          </div>
+        <div className="py-8 text-center">
+          <Link href="/" className="header-logo mb-3 block text-center">
+            Upface
+          </Link>
+          <p className="text-gray-400 max-w-md mx-auto mb-6">
+            Modern websites and applications for local businesses.
+          </p>
           
-          <div className="flex gap-xl justify-center">
+          <div className="flex gap-6 justify-center mb-8">
             <Link href="/services" className="header-menu-link">
               Services
             </Link>
@@ -28,7 +26,7 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="pt-lg pb-xl border-t border-gray-800 text-center">
+        <div className="pt-4 pb-6 border-t border-gray-800 text-center">
           <p className="text-gray-500 text-sm">
             © 2025 Upface. All rights reserved.
           </p>

@@ -8,32 +8,32 @@ export default function Contact() {
     <Layout title="Contact - Upface">
       <section className="section section--black">
         <div className="section-container">
-          <div className="text-center mb-2xl max-w-4xl mx-auto">
+          <div className="text-center mb-12 max-w-4xl mx-auto">
             <h1>Let&apos;s Build Something Amazing Together</h1>
-            <p className="text-large mb-lg">
+            <p className="text-large mb-8 max-w-3xl mx-auto">
               Ready to transform your business with a modern digital presence? Tell us about your project and we&apos;ll show you exactly how we can help.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-lg mb-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <div className="text-center">
-                <h3 className="text-xl mb-sm">⚡ Fast Response</h3>
+                <h3 className="text-xl mb-2">⚡ Fast Response</h3>
                 <p className="text-gray-400">We reply within 24 hours with a detailed proposal</p>
               </div>
               <div className="text-center">
-                <h3 className="text-xl mb-sm">💡 Free Consultation</h3>
+                <h3 className="text-xl mb-2">💡 Free Consultation</h3>
                 <p className="text-gray-400">Get expert advice on your project at no cost</p>
               </div>
               <div className="text-center">
-                <h3 className="text-xl mb-sm">🎯 Custom Solutions</h3>
+                <h3 className="text-xl mb-2">🎯 Custom Solutions</h3>
                 <p className="text-gray-400">Tailored specifically to your business needs</p>
               </div>
             </div>
           </div>
 
           <div className="max-w-2xl mx-auto">
-            <form className="bg-gray-900 p-lg border border-gray-700">
-              <h2 className="text-center mb-lg">Get Your Free Quote</h2>
+            <form className="bg-gray-900 p-8 border border-gray-700 rounded-lg">
+              <h2 className="text-center mb-6">Get Your Free Quote</h2>
               
-              <div className="form-grid form-grid--two mb-md">
+              <div className="form-grid form-grid--two mb-4">
                 <input 
                   className="form-input" 
                   placeholder="Your Name" 
@@ -78,8 +78,8 @@ export default function Contact() {
                 />
               </div>
               
-              <div className="text-center mb-sm">
-                <button type="button" className="btn btn-primary">Get My Free Quote →</button>
+              <div className="text-center mb-4">
+                <button type="button" className="btn btn-primary w-full max-w-sm">Get My Free Quote →</button>
               </div>
               
               <p className="text-center text-sm text-gray-500">

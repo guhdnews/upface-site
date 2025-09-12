@@ -102,14 +102,14 @@ export default function About() {
             </p>
           </div>
           
-          <div className="max-width-xl space-y-xl">
+          <div className="max-width-xl space-y-8">
             {timeline.map((item) => (
-              <div key={item.title} className="flex items-start gap-lg">
-                <div className="flex-shrink-0 w-24 text-right">
+              <div key={item.title} className="flex items-start gap-8">
+                <div className="flex-shrink-0 w-20 text-right">
                   <span className="text-gray-500 font-medium">{item.year}</span>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="mb-sm">{item.title}</h3>
+                  <h3 className="mb-3 pt-1">{item.title}</h3>
                   <p className="text-large text-gray-600">{item.desc}</p>
                 </div>
               </div>

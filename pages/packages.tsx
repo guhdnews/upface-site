@@ -57,6 +57,25 @@ export default function Packages() {
       ],
       ideal: 'Multi-location businesses, franchises, large service providers'
     },
+    {
+      name: 'Custom Solution',
+      description: 'Completely tailored solution built from the ground up to meet your specific requirements.',
+      timeline: 'Varies by scope',
+      features: [
+        'Full requirements analysis and consultation',
+        'Custom architecture and technology stack',
+        'Unlimited pages and features',
+        'Advanced integrations and APIs',
+        'Custom user interfaces and workflows',
+        'Scalable infrastructure setup',
+        'Advanced security implementation',
+        'Performance optimization and monitoring',
+        'Comprehensive testing and QA',
+        'Ongoing maintenance and support',
+        'Training and documentation'
+      ],
+      ideal: 'Unique business models, complex workflows, enterprise needs'
+    },
   ];
 
   return (
@@ -70,39 +89,45 @@ export default function Packages() {
             </p>
           </div>
           
-          <div className="space-y-xl">
-            {packages.map((pkg) => (
+          <div className="space-y-8">
+            {packages.map((pkg, index) => (
               <div key={pkg.name} className="border border-gray-800 max-w-5xl mx-auto">
-                <div className="p-xl">
-                  <div className="text-center mb-xl">
-                    <h2 className="mb-md">{pkg.name}</h2>
-                    <p className="text-large mb-lg">{pkg.description}</p>
-                    <div className="flex flex-col sm:flex-row justify-center items-center gap-md text-gray-500">
+                <div className="p-8">
+                  <div className="text-center mb-8">
+                    <h2 className="mb-4">{pkg.name}</h2>
+                    <p className="text-large mb-6 max-w-3xl mx-auto">{pkg.description}</p>
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-gray-500">
                       <span>Timeline: {pkg.timeline}</span>
                       <span className="hidden sm:inline">•</span>
                       <span>Ideal for: {pkg.ideal}</span>
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div>
-                      <h3 className="mb-lg">What&apos;s included</h3>
-                      <ul className="mb-lg">
+                      <h3 className="mb-6 pt-4">What&apos;s included</h3>
+                      <ul className="mb-6 space-y-2">
                         {pkg.features.map((feature, idx) => (
-                          <li key={idx}>{feature}</li>
+                          <li key={idx} className="pl-6 relative">
+                            <span className="absolute left-0 top-0">•</span>
+                            {feature}
+                          </li>
                         ))}
                       </ul>
                     </div>
                     
                     <div className="flex flex-col justify-center items-center text-center">
-                      <div className="mb-lg">
-                        <p className="text-large mb-lg">
-                          Ready to transform your business? Let&apos;s discuss how this package can work for you.
+                      <div className="mb-6">
+                        <p className="text-large mb-6">
+                          {index === 3 ? 
+                            "Need something completely unique? Let's discuss your custom requirements." :
+                            "Ready to transform your business? Let's discuss how this package can work for you."
+                          }
                         </p>
                       </div>
                       
                       <Link href="/contact" className="btn btn-primary">
-                        Get Quote
+                        {index === 3 ? 'Request Consultation' : 'Get Quote'}
                       </Link>
                     </div>
                   </div>

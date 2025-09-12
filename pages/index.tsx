@@ -30,24 +30,26 @@ export default function Home() {
     <Layout>
       {/* Hero Section */}
       <section className="section--hero section--black">
-        <div className="section-container text-center">
-          <h1>
-            Digital solutions
-            <br />
-            for local business
-          </h1>
-          
-          <p className="text-large mb-2xl">
-            We build exceptional digital experiences for restaurants, construction companies, and service businesses.
-          </p>
-          
-          <div className="btn-group">
-            <Link href="/contact" className="btn btn-primary">
-              Get Started
-            </Link>
-            <Link href="/demos" className="btn btn-secondary">
-              View Work
-            </Link>
+        <div className="section-container">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1>
+              Modern websites
+              <br />
+              that drive results
+            </h1>
+            
+            <p className="text-large mb-8 max-w-2xl mx-auto">
+              We create high-performance websites and applications that help businesses grow, engage customers, and increase revenue.
+            </p>
+            
+            <div className="btn-group justify-center">
+              <Link href="/contact" className="btn btn-primary">
+                Get Started
+              </Link>
+              <Link href="/demos" className="btn btn-secondary">
+                View Work
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -117,19 +119,21 @@ export default function Home() {
       {/* CTA Section */}
       <section className="section section--white">
         <div className="section-container text-center">
-          <h2>
-            Ready to get started?
-          </h2>
-          <p className="text-large mb-2xl">
-            Let&apos;s build something exceptional together.
-          </p>
-          <div className="btn-group">
-            <Link href="/contact" className="btn btn-dark">
-              Start a Project
-            </Link>
-            <Link href="/packages" className="btn btn-dark">
-              View Packages
-            </Link>
+          <div className="max-w-3xl mx-auto">
+            <h2>
+              Ready to get started?
+            </h2>
+            <p className="text-large mb-8">
+              Let&apos;s build something exceptional together.
+            </p>
+            <div className="btn-group justify-center">
+              <Link href="/contact" className="btn btn-dark">
+                Start a Project
+              </Link>
+              <Link href="/packages" className="btn btn-dark">
+                View Packages
+              </Link>
+            </div>
           </div>
         </div>
       </section>

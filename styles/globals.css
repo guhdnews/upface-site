@@ -181,23 +181,22 @@ p {
   text-align: center;
 }
 
-/* Lists with proper spacing */
+/* Lists with proper spacing and padding */
 ul, ol {
   margin-bottom: var(--space-3);
 }
 
 li {
   margin-bottom: var(--space-1);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
+  padding-left: var(--space-3);
+  position: relative;
 }
 
 li::before {
   content: '•';
+  position: absolute;
+  left: 0;
   color: currentColor;
-  flex-shrink: 0;
-  width: 1em;
 }
 
 /* 6. SPACING UTILITIES - 8px BASE SYSTEM */
@@ -264,6 +263,94 @@ li::before {
 .mb-lg { margin-bottom: var(--space-4); }
 .mb-xl { margin-bottom: var(--space-6); }
 .mb-2xl { margin-bottom: var(--space-8); }
+
+/* Additional utility classes for better alignment */
+.max-w-2xl { max-width: 42rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-4xl { max-width: 56rem; }
+.max-w-5xl { max-width: 64rem; }
+
+.w-full { width: 100%; }
+.max-w-sm { max-width: 24rem; }
+.max-w-md { max-width: 28rem; }
+
+.justify-center { justify-content: center; }
+.items-center { align-items: center; }
+.flex { display: flex; }
+.block { display: block; }
+.grid { display: grid; }
+
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-4 > * + * { margin-top: 1rem; }
+.space-y-8 > * + * { margin-top: 2rem; }
+
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+
+.pt-1 { padding-top: 0.25rem; }
+.pt-2 { padding-top: 0.5rem; }
+.pt-4 { padding-top: 1rem; }
+
+.p-8 { padding: 2rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.pb-6 { padding-bottom: 1.5rem; }
+.pt-4 { padding-top: 1rem; }
+
+.text-center { text-align: center; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.left-0 { left: 0; }
+.top-0 { top: 0; }
+
+.pl-6 { padding-left: 1.5rem; }
+.w-20 { width: 5rem; }
+.flex-shrink-0 { flex-shrink: 0; }
+.flex-grow { flex-grow: 1; }
+
+.rounded-lg { border-radius: 0.5rem; }
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 768px) {
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.border { border-width: 1px; }
+.border-gray-300 { border-color: #d1d5db; }
+.border-gray-700 { border-color: #374151; }
+.border-gray-800 { border-color: #1f2937; }
+
+.bg-gray-100 { background-color: #f3f4f6; }
+.bg-gray-900 { background-color: #111827; }
+.bg-black { background-color: #000000; }
+.bg-white { background-color: #ffffff; }
+
+.text-black { color: #000000; }
+.text-white { color: #ffffff; }
+.text-gray-300 { color: #d1d5db; }
+.text-gray-400 { color: #9ca3af; }
+.text-gray-500 { color: #6b7280; }
+.text-gray-600 { color: #4b5563; }
+
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+
+.font-medium { font-weight: 500; }
 
 /* 7. LAYOUT SECTIONS */
 .content-block,
@@ -462,6 +549,18 @@ li::before {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.header-menu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: static;
+}
+
+.header-menu li::before {
+  display: none !important;
+  content: none !important;
 }
 
 .header-menu-link {

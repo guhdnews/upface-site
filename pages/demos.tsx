@@ -62,38 +62,40 @@ export default function Demos() {
       {/* Projects Grid */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {demos.map((demo, index) => (
-          <div key={demo.title} className={`p-xl ${index % 2 === 0 ? 'bg-black border-r border-b border-gray-800' : 'bg-white border-b border-gray-300'}`}>
-            <div className="mb-lg">
-              <div className="aspect-video mb-lg">
+          <div key={demo.title} className={`p-8 ${index % 2 === 0 ? 'bg-black border-r border-b border-gray-800' : 'bg-white border-b border-gray-300'}`}>
+            <div className="mb-6">
+              <div className="aspect-video mb-6 flex items-center justify-center bg-gray-100 border">
                 <p className={`text-lg text-center ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
                   {demo.title} Preview
                 </p>
               </div>
             </div>
             
-            <div className="space-y-md">
+            <div className="space-y-4">
               <div>
-                <p className={`text-sm font-medium mb-sm ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-sm font-medium mb-2 ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
                   {demo.category}
                 </p>
-                <h3 className={`mb-md ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>
+                <h3 className={`mb-4 pt-2 ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>
                   {demo.title}
                 </h3>
-                <p className={`text-large mb-lg ${index % 2 === 0 ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`text-large mb-6 ${index % 2 === 0 ? 'text-gray-300' : 'text-gray-600'}`}>
                   {demo.desc}
                 </p>
               </div>
               
-              <div className="grid grid-cols-2 gap-sm mb-lg">
-                {demo.features.map((feature, idx) => (
-                  <div key={idx} className={`text-sm ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
-                    <span className={`mr-sm ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>•</span>
-                    {feature}
-                  </div>
-                ))}
+              <div className="mb-6">
+                <ul className="space-y-2">
+                  {demo.features.map((feature, idx) => (
+                    <li key={idx} className={`text-sm pl-6 relative ${index % 2 === 0 ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <span className={`absolute left-0 top-0 ${index % 2 === 0 ? 'text-white' : 'text-black'}`}>•</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
               
-              <div className="mb-lg">
+              <div className="mb-6">
                 <p className={`text-xs ${index % 2 === 0 ? 'text-gray-500' : 'text-gray-500'}`}>
                   {demo.tech}
                 </p>
