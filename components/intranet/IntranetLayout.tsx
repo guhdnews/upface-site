@@ -233,14 +233,14 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transform transition-transform duration-300 ease-in-out ${
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar - Fixed width, always visible on desktop */}
+      <div className={`${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0`}>
+      } fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex-shrink-0`}>
         <div className="flex flex-col h-full">
           {/* Logo/Brand */}
-          <div className="flex items-center justify-between px-4 py-6 border-b border-gray-700">
+          <div className="flex items-center justify-between px-4 py-6 border-b border-gray-700 flex-shrink-0">
             <Link href="/intranet" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">U</span>
@@ -256,13 +256,13 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
           </div>
 
           {/* User Info */}
-          <div className="px-4 py-4 border-b border-gray-700">
+          <div className="px-4 py-4 border-b border-gray-700 flex-shrink-0">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                 <User className="w-5 h-5 text-white" />
               </div>
-              <div>
-                <p className="text-white font-medium">{user.displayName || 'User'}</p>
+              <div className="min-w-0">
+                <p className="text-white font-medium truncate">{user.displayName || 'User'}</p>
                 <p className="text-gray-400 text-sm capitalize">{userRole}</p>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
           </nav>
 
           {/* Bottom Actions */}
-          <div className="px-4 py-4 border-t border-gray-700 space-y-2">
+          <div className="px-4 py-4 border-t border-gray-700 space-y-2 flex-shrink-0">
             <Link
               href="/intranet/settings"
               className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors"
@@ -293,10 +293,10 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="lg:pl-64">
+      {/* Main Content Area - Takes remaining space */}
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
-        <div className="lg:hidden bg-white shadow-sm border-b border-gray-200">
+        <header className="lg:hidden bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-between px-4 py-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -304,21 +304,21 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
             >
               <Menu className="w-6 h-6" />
             </button>
-            <h1 className="text-lg font-semibold text-gray-900">{title || 'Intranet'}</h1>
+            <h1 className="text-lg font-semibold text-gray-900 truncate">{title || 'Intranet'}</h1>
             <div className="w-6 h-6"></div>
           </div>
-        </div>
+        </header>
 
-        {/* Page Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
+        {/* Desktop Page Header */}
+        <header className="hidden lg:block bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
-              <div>
-                {title && <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>}
+              <div className="min-w-0 flex-1">
+                {title && <h1 className="text-2xl font-semibold text-gray-900 truncate">{title}</h1>}
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
-                  <span>Welcome back, {user.displayName || user.email}</span>
+                  <span className="truncate">Welcome back, {user.displayName || user.email}</span>
                   <span>•</span>
-                  <span>{new Date().toLocaleDateString('en-US', { 
+                  <span className="whitespace-nowrap">{new Date().toLocaleDateString('en-US', { 
                     weekday: 'long', 
                     year: 'numeric', 
                     month: 'long', 
@@ -326,7 +326,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
                   })}</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 flex-shrink-0">
                 <button className="relative p-2 text-gray-600 hover:text-gray-900">
                   <Bell className="w-5 h-5" />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -339,12 +339,14 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
               </div>
             </div>
           </div>
-        </div>
+        </header>
 
-        {/* Page Content */}
-        <main className="p-6">
-          <div className="max-w-7xl mx-auto">
-            {children}
+        {/* Page Content - Scrollable */}
+        <main className="flex-1 overflow-auto">
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
           </div>
         </main>
       </div>
@@ -352,7 +354,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-gray-600 bg-opacity-75 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

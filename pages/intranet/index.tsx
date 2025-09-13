@@ -155,20 +155,20 @@ export default function IntranetDashboard() {
   return (
     <ProtectedRoute>
       <IntranetLayout title="Dashboard">
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Welcome Section */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl p-6 lg:p-8 text-white">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex-1">
+                <h2 className="text-2xl lg:text-3xl font-bold mb-2">
                   {getGreeting()}, {user?.displayName || 'there'}! 👋
                 </h2>
-                <p className="text-blue-100 mt-1">
+                <p className="text-blue-100 text-base lg:text-lg">
                   Ready to make today productive? Here's your overview.
                 </p>
               </div>
-              <div className="hidden md:block">
-                <Activity className="w-16 h-16 text-blue-200" />
+              <div className="flex-shrink-0 self-center sm:self-auto">
+                <Activity className="w-12 h-12 lg:w-16 lg:h-16 text-blue-200" />
               </div>
             </div>
           </div>

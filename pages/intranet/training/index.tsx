@@ -193,226 +193,241 @@ export default function TrainingDashboard() {
   return (
     <ProtectedRoute>
       <IntranetLayout title="Training & Development">
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Welcome Header */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-800 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-1">
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-800 rounded-xl p-6 lg:p-8 text-white">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex-1">
+                <h2 className="text-2xl lg:text-3xl font-bold mb-2">
                   Welcome to Training & Development! 📚
                 </h2>
-                <p className="text-indigo-100">
+                <p className="text-indigo-100 text-base lg:text-lg">
                   Enhance your skills and advance your career with our comprehensive training programs.
                 </p>
               </div>
-              <GraduationCap className="w-12 h-12 text-indigo-200" />
+              <div className="flex-shrink-0 self-center sm:self-auto">
+                <GraduationCap className="w-12 h-12 lg:w-16 lg:h-16 text-indigo-200" />
+              </div>
             </div>
           </div>
 
           {/* Training Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Completed Modules</p>
-                  <p className="text-3xl font-bold text-gray-900">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1">Completed Modules</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
                     {trainingStats.completedModules}/{trainingStats.totalModules}
                   </p>
-                  <p className="text-sm text-green-600 mt-1">
+                  <p className="text-sm text-green-600">
                     {Math.round((trainingStats.completedModules / trainingStats.totalModules) * 100)}% Complete
                   </p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
+                <div className="flex-shrink-0 ml-4">
+                  <CheckCircle className="w-8 h-8 text-green-500" />
+                </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Hours Completed</p>
-                  <p className="text-3xl font-bold text-gray-900">{trainingStats.hoursCompleted}</p>
-                  <p className="text-sm text-blue-600 mt-1">Learning time</p>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1">Hours Completed</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{trainingStats.hoursCompleted}</p>
+                  <p className="text-sm text-blue-600">Learning time</p>
                 </div>
-                <Clock className="w-8 h-8 text-blue-500" />
+                <div className="flex-shrink-0 ml-4">
+                  <Clock className="w-8 h-8 text-blue-500" />
+                </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Certifications</p>
-                  <p className="text-3xl font-bold text-gray-900">{trainingStats.certificationsEarned}</p>
-                  <p className="text-sm text-purple-600 mt-1">Earned</p>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1">Certifications</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{trainingStats.certificationsEarned}</p>
+                  <p className="text-sm text-purple-600">Earned</p>
                 </div>
-                <Award className="w-8 h-8 text-purple-500" />
+                <div className="flex-shrink-0 ml-4">
+                  <Award className="w-8 h-8 text-purple-500" />
+                </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Learning Streak</p>
-                  <p className="text-3xl font-bold text-gray-900">{trainingStats.currentStreak}</p>
-                  <p className="text-sm text-orange-600 mt-1">Days</p>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-600 mb-1">Learning Streak</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{trainingStats.currentStreak}</p>
+                  <p className="text-sm text-orange-600">Days</p>
                 </div>
-                <Trophy className="w-8 h-8 text-orange-500" />
+                <div className="flex-shrink-0 ml-4">
+                  <Trophy className="w-8 h-8 text-orange-500" />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
             {/* Training Modules */}
-            <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">Available Training Modules</h3>
-                <div className="flex items-center space-x-2 text-sm text-gray-500">
-                  <Activity className="w-4 h-4" />
-                  <span>{trainingStats.overallProgress}% Overall Progress</span>
+            <div className="xl:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200">
+              <div className="p-6 lg:p-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <h3 className="text-lg lg:text-xl font-semibold text-gray-900">Available Training Modules</h3>
+                  <div className="flex items-center space-x-2 text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Activity className="w-4 h-4" />
+                    <span>{trainingStats.overallProgress}% Overall Progress</span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-4">
-                {trainingModules.map((module) => {
-                  const CategoryIcon = getCategoryIcon(module.category);
-                  return (
-                    <div key={module.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-start space-x-3">
-                          <div className={`p-2 rounded-lg ${
-                            module.category === 'Sales' ? 'bg-blue-100' :
-                            module.category === 'Customer Service' ? 'bg-green-100' :
-                            module.category === 'Account Management' ? 'bg-purple-100' :
-                            module.category === 'Leadership' ? 'bg-orange-100' :
-                            'bg-gray-100'
-                          }`}>
-                            <CategoryIcon className={`w-5 h-5 ${
-                              module.category === 'Sales' ? 'text-blue-600' :
-                              module.category === 'Customer Service' ? 'text-green-600' :
-                              module.category === 'Account Management' ? 'text-purple-600' :
-                              module.category === 'Leadership' ? 'text-orange-600' :
-                              'text-gray-600'
-                            }`} />
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-gray-900">{module.title}</h4>
-                            <p className="text-sm text-gray-600 mt-1">{module.description}</p>
-                            <div className="flex items-center space-x-4 mt-2">
-                              <div className="flex items-center space-x-1 text-xs text-gray-500">
-                                <Clock className="w-3 h-3" />
-                                <span>{module.duration}</span>
+                <div className="space-y-4 lg:space-y-6">
+                  {trainingModules.map((module) => {
+                    const CategoryIcon = getCategoryIcon(module.category);
+                    return (
+                      <div key={module.id} className="border border-gray-200 rounded-xl p-4 lg:p-6 hover:shadow-md hover:border-gray-300 transition-all">
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
+                          <div className="flex items-start space-x-3 flex-1">
+                            <div className={`flex-shrink-0 p-2 lg:p-3 rounded-xl ${
+                              module.category === 'Sales' ? 'bg-blue-100' :
+                              module.category === 'Customer Service' ? 'bg-green-100' :
+                              module.category === 'Account Management' ? 'bg-purple-100' :
+                              module.category === 'Leadership' ? 'bg-orange-100' :
+                              'bg-gray-100'
+                            }`}>
+                              <CategoryIcon className={`w-5 h-5 lg:w-6 lg:h-6 ${
+                                module.category === 'Sales' ? 'text-blue-600' :
+                                module.category === 'Customer Service' ? 'text-green-600' :
+                                module.category === 'Account Management' ? 'text-purple-600' :
+                                module.category === 'Leadership' ? 'text-orange-600' :
+                                'text-gray-600'
+                              }`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 text-base lg:text-lg mb-2">{module.title}</h4>
+                              <p className="text-sm text-gray-600 mb-3 leading-relaxed">{module.description}</p>
+                              <div className="flex flex-wrap items-center gap-3">
+                                <div className="flex items-center space-x-1 text-xs text-gray-500">
+                                  <Clock className="w-3 h-3" />
+                                  <span>{module.duration}</span>
+                                </div>
+                                <span className={`px-3 py-1 text-xs font-medium rounded-full ${getDifficultyColor(module.difficulty)}`}>
+                                  {module.difficulty}
+                                </span>
+                                <span className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">
+                                  {module.category}
+                                </span>
                               </div>
-                              <span className={`px-2 py-1 text-xs rounded-full ${getDifficultyColor(module.difficulty)}`}>
-                                {module.difficulty}
-                              </span>
-                              <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
-                                {module.category}
-                              </span>
                             </div>
                           </div>
+                          <div className="flex items-center justify-end lg:justify-start flex-shrink-0">
+                            {module.completed ? (
+                              <div className="flex items-center space-x-2 text-green-600">
+                                <CheckCircle className="w-5 h-5" />
+                                <span className="text-sm font-medium">Completed</span>
+                              </div>
+                            ) : (
+                              <a
+                                href={module.href}
+                                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
+                              >
+                                <Play className="w-4 h-4" />
+                                <span>Continue</span>
+                              </a>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          {module.completed ? (
-                            <CheckCircle className="w-5 h-5 text-green-500" />
-                          ) : (
-                            <a
-                              href={module.href}
-                              className="flex items-center space-x-1 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                            >
-                              <Play className="w-3 h-3" />
-                              <span>Continue</span>
-                            </a>
-                          )}
-                        </div>
-                      </div>
 
-                      {/* Progress Bar */}
-                      <div className="mt-3">
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="text-gray-600">Progress</span>
-                          <span className="text-gray-900 font-medium">{module.progress}%</span>
-                        </div>
-                        <div className="bg-gray-200 rounded-full h-2">
-                          <div
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                              module.completed ? 'bg-green-500' : 'bg-blue-500'
-                            }`}
-                            style={{ width: `${module.progress}%` }}
-                          />
+                        {/* Progress Bar */}
+                        <div className="mt-4">
+                          <div className="flex justify-between text-sm mb-2">
+                            <span className="text-gray-600 font-medium">Progress</span>
+                            <span className="text-gray-900 font-semibold">{module.progress}%</span>
+                          </div>
+                          <div className="bg-gray-200 rounded-full h-2.5">
+                            <div
+                              className={`h-2.5 rounded-full transition-all duration-500 ${
+                                module.completed ? 'bg-green-500' : 'bg-blue-500'
+                              }`}
+                              style={{ width: `${module.progress}%` }}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-6 lg:space-y-8">
               {/* Role-Based Recommendation */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="flex items-center space-x-2 mb-3">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 lg:p-8">
+                <div className="flex items-center space-x-2 mb-4">
                   <Star className="w-5 h-5 text-yellow-500" />
-                  <h4 className="font-medium text-gray-900">Recommended for {userRole}s</h4>
+                  <h4 className="font-semibold text-gray-900">Recommended for {userRole}s</h4>
                 </div>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 leading-relaxed">
                   {roleBasedRecommendations[userRole as keyof typeof roleBasedRecommendations]}
                 </p>
               </div>
 
               {/* Achievements */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h4 className="font-medium text-gray-900 mb-4">Recent Achievements</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-green-100 rounded-full">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 lg:p-8">
+                <h4 className="font-semibold text-gray-900 mb-6">Recent Achievements</h4>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+                    <div className="p-2 bg-green-100 rounded-full flex-shrink-0">
                       <Trophy className="w-4 h-4 text-green-600" />
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Sales Champion</p>
-                      <p className="text-xs text-gray-500">Completed Sales Fundamentals</p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900">Sales Champion</p>
+                      <p className="text-xs text-gray-600">Completed Sales Fundamentals</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-100 rounded-full">
+                  <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+                    <div className="p-2 bg-blue-100 rounded-full flex-shrink-0">
                       <Award className="w-4 h-4 text-blue-600" />
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Learning Streak</p>
-                      <p className="text-xs text-gray-500">7 days in a row</p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900">Learning Streak</p>
+                      <p className="text-xs text-gray-600">7 days in a row</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Quick Links */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h4 className="font-medium text-gray-900 mb-4">Training Resources</h4>
-                <div className="space-y-2">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 lg:p-8">
+                <h4 className="font-semibold text-gray-900 mb-6">Training Resources</h4>
+                <div className="space-y-3">
                   <a
                     href="/intranet/training/library"
-                    className="flex items-center space-x-2 p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="flex items-center space-x-3 p-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group"
                   >
-                    <BookOpen className="w-4 h-4" />
-                    <span>Training Library</span>
+                    <BookOpen className="w-4 h-4 text-gray-500 group-hover:text-blue-600" />
+                    <span className="font-medium">Training Library</span>
                   </a>
                   <a
                     href="/intranet/training/certifications"
-                    className="flex items-center space-x-2 p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="flex items-center space-x-3 p-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group"
                   >
-                    <Award className="w-4 h-4" />
-                    <span>Certifications</span>
+                    <Award className="w-4 h-4 text-gray-500 group-hover:text-purple-600" />
+                    <span className="font-medium">Certifications</span>
                   </a>
                   <a
                     href="/intranet/training/progress"
-                    className="flex items-center space-x-2 p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="flex items-center space-x-3 p-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group"
                   >
-                    <TrendingUp className="w-4 h-4" />
-                    <span>Progress Report</span>
+                    <TrendingUp className="w-4 h-4 text-gray-500 group-hover:text-green-600" />
+                    <span className="font-medium">Progress Report</span>
                   </a>
-                  <button className="flex items-center space-x-2 p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md w-full text-left">
-                    <Users className="w-4 h-4" />
-                    <span>Study Groups</span>
+                  <button className="flex items-center space-x-3 p-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors w-full text-left group">
+                    <Users className="w-4 h-4 text-gray-500 group-hover:text-orange-600" />
+                    <span className="font-medium">Study Groups</span>
                   </button>
                 </div>
               </div>
