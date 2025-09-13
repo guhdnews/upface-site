@@ -43,8 +43,6 @@ export default function EnhancedUserCard({
 }: EnhancedUserCardProps) {
   const [assignments, setAssignments] = useState<ClientAssignment[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,21 +70,15 @@ export default function EnhancedUserCard({
 
   const loadUserData = async () => {
     try {
-      setLoading(true);
-      
       // For now, we'll use mock data since we don't have real user IDs
       // In production, this would use the actual user ID from Firebase
       const mockAssignments: ClientAssignment[] = [];
       const mockClients: Client[] = [];
-      const mockTasks: Task[] = [];
 
       setAssignments(mockAssignments);
       setClients(mockClients);
-      setTasks(mockTasks);
     } catch (error) {
       console.error('Error loading user data:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

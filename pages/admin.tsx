@@ -54,11 +54,11 @@ export default function Admin() {
     revenue: 0
   });
   const [showUserDetails, setShowUserDetails] = useState(false);
-  const [selectedUserForDetails, setSelectedUserForDetails] = useState<any>(null);
+  const [selectedUserForDetails, setSelectedUserForDetails] = useState<typeof mockUsers[0] | null>(null);
   const [showClientAssignment, setShowClientAssignment] = useState(false);
-  const [selectedUserForAssignment, setSelectedUserForAssignment] = useState<any>(null);
+  const [selectedUserForAssignment, setSelectedUserForAssignment] = useState<typeof mockUsers[0] | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [selectedUserForDeletion, setSelectedUserForDeletion] = useState<any>(null);
+  const [selectedUserForDeletion, setSelectedUserForDeletion] = useState<typeof mockUsers[0] | null>(null);
   
   const { user, signOut } = useAuth();
   const router = useRouter();

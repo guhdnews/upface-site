@@ -27,7 +27,6 @@ import {
   UserProfile,
   TaskAnalytics,
   UserPerformance,
-  ProjectTemplate,
   AcquisitionSource
 } from './crm-types';
 
