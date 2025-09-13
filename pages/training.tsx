@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
+import ProtectedRoute from '../components/security/ProtectedRoute';
 import { 
   Users, 
   Download, 
@@ -81,8 +82,9 @@ export default function Training() {
   const currentRole = roleData[selectedRole as keyof typeof roleData];
 
   return (
-    <Layout title="Sales Training - Upface">
-      <section className="py-32 bg-black min-h-screen">
+    <ProtectedRoute requiredPermission="training.agent">
+      <Layout title="Sales Training - Upface">
+        <section className="py-32 bg-black min-h-screen">
         <div className="section-container">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-7xl font-light text-white mb-8">
@@ -154,7 +156,7 @@ export default function Training() {
                 {/* Quick Actions */}
                 <div className="flex flex-wrap gap-4 mb-8">
                   <Link 
-                    href={`/training/${selectedRole}/manual`} 
+                    href={`/training/${selectedRole}`} 
                     className={`btn bg-${currentRole.color}-600 hover:bg-${currentRole.color}-700 text-white border-${currentRole.color}-600`}
                   >
                     <BookOpen className="w-4 h-4 mr-2" />
@@ -246,15 +248,16 @@ export default function Training() {
               Access your personalized training manual and start your journey to sales success.
             </p>
             <Link 
-              href={`/training/${selectedRole}/manual`} 
+              href={`/training/${selectedRole}`} 
               className={`btn bg-${currentRole.color}-600 hover:bg-${currentRole.color}-700 text-white`}
             >
               Start Training Program
             </Link>
           </div>
         </div>
-      </section>
-    </Layout>
+        </section>
+      </Layout>
+    </ProtectedRoute>
   );
 }
 

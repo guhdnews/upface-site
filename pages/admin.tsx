@@ -5,6 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { ClientService, InquiryService } from '../lib/crm-db';
 import { Client, Inquiry } from '../lib/crm-types';
 import EnhancedUserCard from '../components/crm/EnhancedUserCard';
+import PermissionsManager from '../components/admin/PermissionsManager';
+import PermissionsChecklist from '../components/admin/PermissionsChecklist';
+import { UserService, UserProfile } from '../lib/user-service';
 import Link from 'next/link';
 import { 
   Users, 
@@ -21,7 +24,7 @@ import {
   UserCog
 } from 'lucide-react';
 
-// Mock data for users - will be enhanced later
+// Mock data for users - being replaced with real data
 const mockUsers = [
   { id: 1, name: 'Sarah Wilson', email: 'sarah@upface.dev', role: 'agent', status: 'active', tasksAssigned: 25, tasksCompleted: 18 },
   { id: 2, name: 'Mike Johnson', email: 'mike@upface.dev', role: 'manager', status: 'active', tasksAssigned: 15, tasksCompleted: 12 },
@@ -32,7 +35,8 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('crm');
   const [clients, setClients] = useState<Client[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [users] = useState(mockUsers);
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const [showAddUser, setShowAddUser] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
   const [editingUserId, setEditingUserId] = useState<number | null>(null);
@@ -60,7 +64,7 @@ export default function Admin() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [selectedUserForDeletion, setSelectedUserForDeletion] = useState<typeof mockUsers[0] | null>(null);
   
-  const { user, signOut } = useAuth();
+  const { user, userProfile, signOut } = useAuth();
   const router = useRouter();
 
   // Load admin data and redirect to login if not authenticated
@@ -74,13 +78,16 @@ export default function Admin() {
 
   const loadAdminData = async () => {
     try {
-      const [clientsData, inquiriesData] = await Promise.all([
+      const [clientsData, inquiriesData, usersData] = await Promise.all([
         ClientService.getAllClients(),
-        InquiryService.getNewInquiries()
+        InquiryService.getNewInquiries(),
+        UserService.getAllUsers()
       ]);
 
       setClients(clientsData);
       setInquiries(inquiriesData);
+      setUsers(usersData);
+      setLoadingUsers(false);
 
       // Calculate stats
       const revenue = clientsData
@@ -97,6 +104,7 @@ export default function Admin() {
       });
     } catch (error) {
       console.error('Error loading admin data:', error);
+      setLoadingUsers(false);
     }
   };
 
@@ -124,6 +132,7 @@ export default function Admin() {
     { id: 'crm', name: 'CRM', icon: <Users size={20} /> },
     { id: 'content', name: 'Content', icon: <FileText size={20} /> },
     { id: 'users', name: 'Users', icon: <UserCog size={20} /> },
+    { id: 'permissions', name: 'Permissions', icon: <Shield size={20} /> },
     { id: 'analytics', name: 'Analytics', icon: <BarChart3 size={20} /> },
   ];
 
@@ -220,7 +229,67 @@ export default function Admin() {
     </div>
   );
 
-  const renderContent = () => (
+  // Handle user role updates for PermissionsManager
+  const handleUpdateUserRole = async (userId: string, newRole: 'agent' | 'manager' | 'admin' | 'owner'): Promise<void> => {
+    try {
+      await UserService.updateUser(userId, { role: newRole });
+      // Refresh users list
+      const updatedUsers = await UserService.getAllUsers();
+      setUsers(updatedUsers);
+    } catch (error) {
+      console.error('Failed to update user role:', error);
+      throw error;
+    }
+  };
+
+  const handleUpdateUserStatus = async (userId: string, status: 'active' | 'inactive'): Promise<void> => {
+    try {
+      await UserService.updateUser(userId, { status });
+      // Refresh users list
+      const updatedUsers = await UserService.getAllUsers();
+      setUsers(updatedUsers);
+    } catch (error) {
+      console.error('Failed to update user status:', error);
+      throw error;
+    }
+  };
+
+  const renderPermissions = () => (
+    <div className="space-y-8">
+      <h2 className="text-2xl font-bold text-white">Permissions Management</h2>
+      {loadingUsers ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <span className="ml-3 text-gray-400">Loading users...</span>
+        </div>
+      ) : (
+        <>
+          {/* Permissions Checklist - Visual Overview */}
+          <PermissionsChecklist
+            users={users.map(user => ({
+              ...user,
+              lastLogin: user.lastLogin,
+              createdAt: user.createdAt
+            }))}
+            currentUserRole={userProfile?.role || 'agent'}
+          />
+          
+          {/* Permissions Manager - User Management */}
+          <PermissionsManager
+            users={users.map(user => ({
+              ...user,
+              lastLogin: user.lastLogin,
+              createdAt: user.createdAt
+            }))}
+            onUpdateUserRole={handleUpdateUserRole}
+            onUpdateUserStatus={handleUpdateUserStatus}
+          />
+        </>
+      )}
+    </div>
+  );
+
+  const renderContentManagement = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Content Management</h2>
       
@@ -508,18 +577,33 @@ export default function Admin() {
         )}
         
         {/* Users List */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {users.map((user) => (
-            <EnhancedUserCard
-              key={user.id}
-              user={user}
-              onEdit={handleEditUser}
-              onDelete={handleDeleteUser}
-              onViewDetails={handleViewUserDetails}
-              onAssignClient={handleAssignClient}
-            />
-          ))}
-        </div>
+        {loadingUsers ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <span className="ml-3 text-gray-400">Loading users...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {users.map((user) => (
+              <EnhancedUserCard
+                key={user.id}
+                user={{
+                  id: user.id,
+                  name: user.name,
+                  email: user.email,
+                  role: user.role,
+                  status: user.status,
+                  tasksAssigned: 0, // TODO: Integrate with task system
+                  tasksCompleted: 0 // TODO: Integrate with task system
+                }}
+                onEdit={(userId: number) => handleEditUser(Number(userId))}
+                onDelete={(userId: number) => handleDeleteUser(Number(userId))}
+                onViewDetails={(userId: number) => handleViewUserDetails(Number(userId))}
+                onAssignClient={(userId: number) => handleAssignClient(Number(userId))}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Role Descriptions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -863,6 +947,7 @@ export default function Admin() {
       case 'crm': return renderCRM();
       case 'content': return renderContent();
       case 'users': return renderUsers();
+      case 'permissions': return renderPermissions();
       case 'analytics': return renderAnalytics();
       default: return renderCRM();
     }

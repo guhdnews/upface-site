@@ -1,6 +1,7 @@
 import Layout from '../../../components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
+import ProtectedRoute from '../../../components/security/ProtectedRoute';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -56,8 +57,9 @@ export default function ManagerManual() {
   };
 
   return (
-    <Layout title="Account Manager Training Manual - Upface">
-      <section className="py-16 bg-black min-h-screen">
+    <ProtectedRoute requiredPermissions={['training.manager']}>
+      <Layout title="Account Manager Training Manual - Upface">
+        <section className="py-16 bg-black min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -157,8 +159,9 @@ export default function ManagerManual() {
             </div>
           </div>
         </div>
-      </section>
-    </Layout>
+        </section>
+      </Layout>
+    </ProtectedRoute>
   );
 }
 

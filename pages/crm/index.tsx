@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { InquiryService, ClientService, FollowUpService } from '../../lib/crm-db';
 import { Inquiry, Client, FollowUp } from '../../lib/crm-types';
 import Link from 'next/link';
-import { Users, UserPlus, Calendar, AlertCircle, TrendingUp, Mail, CheckSquare } from 'lucide-react';
+import { Users, UserPlus, Calendar, AlertCircle, TrendingUp, Mail, CheckSquare, Target } from 'lucide-react';
 
 export default function CRMDashboard() {
   const { user, loading } = useAuth();
@@ -15,7 +15,8 @@ export default function CRMDashboard() {
     totalClients: 0,
     newInquiries: 0,
     pendingFollowUps: 0,
-    thisWeekConversions: 0
+    thisWeekConversions: 0,
+    totalLeads: 0
   });
 
   useEffect(() => {
@@ -33,6 +34,23 @@ export default function CRMDashboard() {
         user ? FollowUpService.getFollowUpsByUser(user.uid) : Promise.resolve([])
       ]);
 
+      // Load leads data if available
+      let leadsData = [];
+      try {
+        const { LeadService } = await import('../../lib/services/lead-service');
+        const { getUserPermissions } = await import('../../lib/permissions');
+        const permissions = await getUserPermissions(user.uid);
+        const leadsResponse = await LeadService.getLeads({
+          userId: user.uid,
+          userRole: permissions.role,
+          limit: 5
+        });
+        leadsData = leadsResponse.leads;
+      } catch (error) {
+        // Lead service might not be available yet
+        console.log('Lead service not available:', error);
+      }
+
       setInquiries(inquiriesData);
       setClients(clientsData);
       setFollowUps(followUpsData);
@@ -49,7 +67,8 @@ export default function CRMDashboard() {
         totalClients: clientsData.length,
         newInquiries: inquiriesData.length,
         pendingFollowUps: followUpsData.length,
-        thisWeekConversions
+        thisWeekConversions,
+        totalLeads: leadsData.length || 0
       });
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -93,7 +112,7 @@ export default function CRMDashboard() {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <div className="bg-gray-900 p-6 border border-gray-700 rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
@@ -131,6 +150,16 @@ export default function CRMDashboard() {
                   <p className="text-3xl font-light text-white">{stats.thisWeekConversions}</p>
                 </div>
                 <TrendingUp className="text-purple-500" size={32} />
+              </div>
+            </div>
+
+            <div className="bg-gray-900 p-6 border border-gray-700 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm">Total Leads</p>
+                  <p className="text-3xl font-light text-white">{stats.totalLeads}</p>
+                </div>
+                <Target className="text-orange-500" size={32} />
               </div>
             </div>
           </div>
@@ -267,7 +296,7 @@ export default function CRMDashboard() {
           </div>
 
           {/* Navigation Links */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-6 gap-4">
             <Link href="/crm/clients" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <Users className="mx-auto mb-2 text-blue-400" size={32} />
               <p className="text-white">Manage Clients</p>
@@ -283,6 +312,10 @@ export default function CRMDashboard() {
             <Link href="/crm/follow-ups" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <Calendar className="mx-auto mb-2 text-yellow-400" size={32} />
               <p className="text-white">Follow-ups</p>
+            </Link>
+            <Link href="/crm/leads" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
+              <Target className="mx-auto mb-2 text-orange-400" size={32} />
+              <p className="text-white">Leads</p>
             </Link>
             <Link href="/admin" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <AlertCircle className="mx-auto mb-2 text-purple-400" size={32} />
