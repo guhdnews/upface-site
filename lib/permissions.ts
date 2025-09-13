@@ -26,6 +26,12 @@ export const ROLE_HIERARCHY: Record<UserRole, number> = {
 export const PERMISSIONS: Permission[] = [
   // CRM Permissions
   {
+    id: 'crm.access',
+    name: 'CRM Access',
+    description: 'Access the CRM system and features',
+    category: 'CRM'
+  },
+  {
     id: 'crm.clients.view',
     name: 'View Clients',
     description: 'View client information and details',
@@ -166,6 +172,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
   agent: {
     role: 'agent',
     permissions: [
+      'crm.access',
       'crm.clients.view',
       'crm.clients.create',
       'crm.clients.edit',
@@ -177,6 +184,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
   manager: {
     role: 'manager',
     permissions: [
+      'crm.access',
       'crm.clients.view',
       'crm.clients.create',
       'crm.clients.edit',
@@ -194,6 +202,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
   admin: {
     role: 'admin',
     permissions: [
+      'crm.access',
       'crm.clients.view',
       'crm.clients.create',
       'crm.clients.edit',
@@ -376,3 +385,33 @@ export const RATE_LIMITS = {
   API_SENSITIVE: { requests: 10, windowMs: 60 * 1000 }, // 10 requests per minute for sensitive operations
   CRM_OPERATIONS: { requests: 50, windowMs: 60 * 1000 } // 50 CRM operations per minute
 } as const;
+
+// User permissions interface
+export interface UserPermissionsData {
+  role: UserRole;
+  permissions: string[];
+}
+
+// Mock function to get user permissions (replace with actual implementation)
+export async function getUserPermissions(userId: string): Promise<UserPermissionsData> {
+  // In a real implementation, this would fetch from your database
+  // For now, returning mock data based on user ID or defaulting to 'agent'
+  
+  // Mock role assignment based on userId patterns (you can customize this)
+  let role: UserRole = 'agent';
+  
+  if (userId.includes('owner') || userId.includes('admin')) {
+    role = 'owner';
+  } else if (userId.includes('manager')) {
+    role = 'manager';
+  } else if (userId.includes('admin')) {
+    role = 'admin';
+  }
+  
+  const permissions = ROLE_PERMISSIONS[role]?.permissions || [];
+  
+  return {
+    role,
+    permissions
+  };
+}
