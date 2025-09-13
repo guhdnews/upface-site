@@ -261,11 +261,38 @@ export default function Admin() {
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual user creation
     console.log('Adding user:', newUser);
-    alert('User creation will be implemented with Firebase Admin SDK');
+    
+    if (!newUser.name || !newUser.email) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // TODO: Implement actual user creation with Firebase Admin SDK
+    alert(`User creation functionality will be implemented with Firebase Admin SDK.\n\nUser details:\nName: ${newUser.name}\nEmail: ${newUser.email}\nRole: ${newUser.role}`);
+    
     setShowAddUser(false);
     setNewUser({ name: '', email: '', role: 'agent' });
+  };
+
+  const handleToggleAddUser = () => {
+    console.log('Toggle add user, current state:', showAddUser);
+    setShowAddUser(!showAddUser);
+  };
+
+  const handleCancelAddUser = () => {
+    console.log('Cancel add user');
+    setShowAddUser(false);
+    setNewUser({ name: '', email: '', role: 'agent' });
+  };
+
+  const handleEditUser = (userId: number) => {
+    console.log('Edit user:', userId);
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      alert(`Edit user functionality will be implemented.\n\nUser: ${user.name}\nEmail: ${user.email}\nRole: ${user.role}\nStatus: ${user.status}`);
+    }
+    // TODO: Implement user editing modal/form
   };
 
   const renderUsers = () => {
@@ -275,7 +302,7 @@ export default function Admin() {
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">User Management</h2>
           <button 
-            onClick={() => setShowAddUser(!showAddUser)}
+            onClick={handleToggleAddUser}
             className="btn btn-primary"
           >
             <Plus size={16} />
@@ -336,7 +363,7 @@ export default function Admin() {
                 </button>
                 <button 
                   type="button" 
-                  onClick={() => setShowAddUser(false)}
+                  onClick={handleCancelAddUser}
                   className="btn btn-secondary"
                 >
                   Cancel
@@ -366,7 +393,11 @@ export default function Admin() {
                     </span>
                   </div>
                 </div>
-                <button className="text-gray-400 hover:text-primary-400">
+                <button 
+                  onClick={() => handleEditUser(user.id)}
+                  className="text-gray-400 hover:text-primary-400"
+                  title={`Edit ${user.name}`}
+                >
                   <Edit3 size={16} />
                 </button>
               </div>
