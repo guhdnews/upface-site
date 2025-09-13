@@ -114,18 +114,18 @@ export default function FAQ() {
           
           <div className="max-w-4xl mx-auto space-y-16">
             {faqs.map((category, categoryIndex) => (
-              <div key={categoryIndex} className={categoryIndex > 0 ? 'pt-16' : ''}>
-                <h2 className="text-3xl font-light text-white mb-8 text-center">{category.category}</h2>
+              <div key={categoryIndex} className={categoryIndex > 0 ? 'pt-16' : 'pt-8'}>
+                <h2 className="text-3xl font-light text-white mb-8 text-center pt-8">{category.category}</h2>
                 <div className="space-y-4">
                   {category.questions.map((faq, questionIndex) => {
                     const id = `${categoryIndex}-${questionIndex}`;
                     const isOpen = openItems.includes(id);
                     
                     return (
-                      <div key={questionIndex} className="border border-gray-800">
+                      <div key={questionIndex} className="border border-gray-800 rounded-lg overflow-hidden">
                         <button
                           onClick={() => toggleItem(id)}
-                          className="w-full p-6 text-left flex justify-between items-center hover:bg-gray-900/30 transition-colors"
+                          className="w-full p-6 text-left flex justify-between items-center hover:bg-gray-900/30 transition-colors duration-200"
                         >
                           <span className="text-lg font-medium text-white pr-4">{faq.q}</span>
                           {isOpen ? (
@@ -135,8 +135,10 @@ export default function FAQ() {
                           )}
                         </button>
                         {isOpen && (
-                          <div className="px-8 pb-6">
-                            <p className="text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                          <div className="px-6 pb-6 pt-2">
+                            <div className="pl-6 border-l-2 border-gray-800">
+                              <p className="text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -147,14 +149,14 @@ export default function FAQ() {
             ))}
           </div>
           
-          <div className="text-center mt-24">
+          <div className="text-center mt-32 pt-16 border-t border-gray-800">
             <h2 className="text-3xl font-light text-white mb-6">Still have questions?</h2>
-            <p className="text-xl text-gray-400 font-light mb-8">
-              We’re here to help. Get in touch and we’ll answer any questions about your project.
+            <p className="text-xl text-gray-400 font-light mb-8 max-w-2xl mx-auto">
+              We&apos;re here to help. Get in touch and we&apos;ll answer any questions about your project.
             </p>
             <Link
               href="/contact"
-              className="bg-white text-black px-12 py-4 font-medium hover:bg-gray-100 transition-colors"
+              className="inline-block bg-white text-black px-12 py-4 font-medium hover:bg-gray-100 transition-colors rounded-sm"
             >
               Contact Us
             </Link>

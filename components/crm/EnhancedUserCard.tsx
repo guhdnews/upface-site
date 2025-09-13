@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Client, ClientAssignment, Task } from '../../lib/crm-types';
+import { Client, ClientAssignment } from '../../lib/crm-types';
 import { 
   Mail, 
   Phone, 
