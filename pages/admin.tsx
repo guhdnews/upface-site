@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { ClientService, InquiryService } from '../lib/crm-db';
 import { Client, Inquiry } from '../lib/crm-types';
+import EnhancedUserCard from '../components/crm/EnhancedUserCard';
 import Link from 'next/link';
 import { 
   Users, 
@@ -33,10 +34,18 @@ export default function Admin() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [users] = useState(mockUsers);
   const [showAddUser, setShowAddUser] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
+  const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
     role: 'agent' as 'agent' | 'manager' | 'admin'
+  });
+  const [editUser, setEditUser] = useState({
+    name: '',
+    email: '',
+    role: 'agent' as 'agent' | 'manager' | 'admin',
+    status: 'active' as 'active' | 'inactive'
   });
   const [stats, setStats] = useState({
     totalClients: 0,
@@ -44,6 +53,12 @@ export default function Admin() {
     activeProjects: 0,
     revenue: 0
   });
+  const [showUserDetails, setShowUserDetails] = useState(false);
+  const [selectedUserForDetails, setSelectedUserForDetails] = useState<any>(null);
+  const [showClientAssignment, setShowClientAssignment] = useState(false);
+  const [selectedUserForAssignment, setSelectedUserForAssignment] = useState<any>(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [selectedUserForDeletion, setSelectedUserForDeletion] = useState<any>(null);
   
   const { user, signOut } = useAuth();
   const router = useRouter();
@@ -241,23 +256,7 @@ export default function Admin() {
     </div>
   );
 
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'admin': return 'bg-red-600/20 text-red-400';
-      case 'manager': return 'bg-blue-600/20 text-blue-400';
-      case 'agent': return 'bg-green-600/20 text-green-400';
-      default: return 'bg-gray-600/20 text-gray-400';
-    }
-  };
-
-  const getRoleIcon = (role: string) => {
-    switch (role) {
-      case 'admin': return <Shield size={16} />;
-      case 'manager': return <UserCog size={16} />;
-      case 'agent': return <UserCheck size={16} />;
-      default: return <Users size={16} />;
-    }
-  };
+  // Removed unused helper functions - now handled in EnhancedUserCard
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -290,9 +289,66 @@ export default function Admin() {
     console.log('Edit user:', userId);
     const user = users.find(u => u.id === userId);
     if (user) {
-      alert(`Edit user functionality will be implemented.\n\nUser: ${user.name}\nEmail: ${user.email}\nRole: ${user.role}\nStatus: ${user.status}`);
+      setEditUser({
+        name: user.name,
+        email: user.email,
+        role: user.role as 'agent' | 'manager' | 'admin',
+        status: user.status as 'active' | 'inactive'
+      });
+      setEditingUserId(userId);
+      setShowEditUser(true);
     }
-    // TODO: Implement user editing modal/form
+  };
+
+  const handleUpdateUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Updating user:', editingUserId, editUser);
+    
+    if (!editUser.name || !editUser.email) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // TODO: Implement actual user update with Firebase Admin SDK
+    alert(`User update functionality will be implemented with Firebase Admin SDK.\n\nUpdated details:\nName: ${editUser.name}\nEmail: ${editUser.email}\nRole: ${editUser.role}\nStatus: ${editUser.status}`);
+    
+    setShowEditUser(false);
+    setEditingUserId(null);
+    setEditUser({ name: '', email: '', role: 'agent', status: 'active' });
+  };
+
+  const handleCancelEditUser = () => {
+    console.log('Cancel edit user');
+    setShowEditUser(false);
+    setEditingUserId(null);
+    setEditUser({ name: '', email: '', role: 'agent', status: 'active' });
+  };
+
+  const handleDeleteUser = (userId: number) => {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      setShowDeleteConfirmation(true);
+      setSelectedUserForDeletion(user);
+      console.log('Delete user:', userId);
+    }
+  };
+
+  const handleViewUserDetails = (userId: number) => {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      setShowUserDetails(true);
+      setSelectedUserForDetails(user);
+      console.log('View user details:', userId);
+    }
+  };
+
+  const handleAssignClient = (userId: number) => {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      setShowClientAssignment(true);
+      setSelectedUserForAssignment(user);
+      console.log('Assign client to user:', userId);
+    }
   };
 
   const renderUsers = () => {
@@ -373,68 +429,95 @@ export default function Admin() {
           </div>
         )}
         
-        {/* Users List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
-            <div key={user.id} className="bg-gray-900 border border-gray-700 rounded-xl p-6">
-              <div className="flex justify-between items-start mb-4">
+        {/* Edit User Form */}
+        {showEditUser && (
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Edit User</h3>
+            <form onSubmit={handleUpdateUser} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-white">{user.name}</h3>
-                  <p className="text-gray-400 text-sm">{user.email}</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    {getRoleIcon(user.role)}
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(user.role)}`}>
-                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                    </span>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      user.status === 'active' ? 'bg-green-600/20 text-green-400' : 'bg-gray-600/20 text-gray-400'
-                    }`}>
-                      {user.status}
-                    </span>
-                  </div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editUser.name}
+                    onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
+                    className="form-input"
+                    placeholder="Enter full name"
+                    required
+                  />
                 </div>
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={editUser.email}
+                    onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+                    className="form-input"
+                    placeholder="user@upface.dev"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Role
+                  </label>
+                  <select
+                    value={editUser.role}
+                    onChange={(e) => setEditUser({ ...editUser, role: e.target.value as 'agent' | 'manager' | 'admin' })}
+                    className="form-select"
+                  >
+                    <option value="agent">Agent - Can manage assigned clients</option>
+                    <option value="manager">Manager - Can manage team and all clients</option>
+                    <option value="admin">Admin - Full system access</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Status
+                  </label>
+                  <select
+                    value={editUser.status}
+                    onChange={(e) => setEditUser({ ...editUser, status: e.target.value as 'active' | 'inactive' })}
+                    className="form-select"
+                  >
+                    <option value="active">Active - User can access the system</option>
+                    <option value="inactive">Inactive - User access suspended</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <button type="submit" className="btn btn-primary">
+                  Update User
+                </button>
                 <button 
-                  onClick={() => handleEditUser(user.id)}
-                  className="text-gray-400 hover:text-primary-400"
-                  title={`Edit ${user.name}`}
+                  type="button" 
+                  onClick={handleCancelEditUser}
+                  className="btn btn-secondary"
                 >
-                  <Edit3 size={16} />
+                  Cancel
                 </button>
               </div>
-              
-              {user.role !== 'admin' && (
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Tasks Assigned:</span>
-                    <span className="text-white">{user.tasksAssigned}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Completed:</span>
-                    <span className="text-green-400">{user.tasksCompleted}</span>
-                  </div>
-                  {user.tasksAssigned > 0 && (
-                    <>
-                      <div className="w-full bg-gray-700 rounded-full h-2">
-                        <div 
-                          className="bg-primary-500 h-2 rounded-full" 
-                          style={{ width: `${(user.tasksCompleted / user.tasksAssigned) * 100}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-gray-400 text-center">
-                        {Math.round((user.tasksCompleted / user.tasksAssigned) * 100)}% Complete
-                      </p>
-                    </>
-                  )}
-                </div>
-              )}
-              
-              {user.role === 'admin' && (
-                <div className="text-center py-4">
-                  <Shield className="mx-auto mb-2 text-red-400" size={32} />
-                  <p className="text-gray-400 text-sm">System Administrator</p>
-                </div>
-              )}
-            </div>
+            </form>
+          </div>
+        )}
+        
+        {/* Users List */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {users.map((user) => (
+            <EnhancedUserCard
+              key={user.id}
+              user={user}
+              onEdit={handleEditUser}
+              onDelete={handleDeleteUser}
+              onViewDetails={handleViewUserDetails}
+              onAssignClient={handleAssignClient}
+            />
           ))}
         </div>
 
@@ -460,6 +543,252 @@ export default function Admin() {
               <h4 className="text-white font-medium">Admin</h4>
             </div>
             <p className="text-gray-400 text-sm">Full system access and configuration</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleConfirmDeleteUser = () => {
+    if (selectedUserForDeletion) {
+      // TODO: Implement actual user deletion with Firebase Admin SDK
+      console.log('Confirming deletion of user:', selectedUserForDeletion.id);
+      // For now, just close the modal and show success message
+      alert(`User ${selectedUserForDeletion.name} would be deleted. (Firebase integration needed)`);
+      setShowDeleteConfirmation(false);
+      setSelectedUserForDeletion(null);
+    }
+  };
+
+  const handleAssignClientToUser = (clientId: string) => {
+    if (selectedUserForAssignment) {
+      // TODO: Implement actual client assignment with Firebase
+      console.log('Assigning client', clientId, 'to user', selectedUserForAssignment.id);
+      alert(`Client would be assigned to ${selectedUserForAssignment.name}. (Firebase integration needed)`);
+      setShowClientAssignment(false);
+      setSelectedUserForAssignment(null);
+    }
+  };
+
+  const renderUserDetailsModal = () => {
+    if (!showUserDetails || !selectedUserForDetails) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-lg border border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-700">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-white">User Details</h2>
+              <button
+                onClick={() => {
+                  setShowUserDetails(false);
+                  setSelectedUserForDetails(null);
+                }}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          
+          <div className="p-6 space-y-6">
+            {/* User Info */}
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-semibold text-xl">
+                {selectedUserForDetails.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">{selectedUserForDetails.name}</h3>
+                <p className="text-gray-400">{selectedUserForDetails.email}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    selectedUserForDetails.role === 'admin' ? 'bg-red-100 text-red-700' :
+                    selectedUserForDetails.role === 'manager' ? 'bg-blue-100 text-blue-700' :
+                    'bg-green-100 text-green-700'
+                  }`}>
+                    {selectedUserForDetails.role}
+                  </span>
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    selectedUserForDetails.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                  }`}>
+                    {selectedUserForDetails.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Performance Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-black p-4 rounded-lg">
+                <p className="text-2xl font-bold text-blue-400">{selectedUserForDetails.tasksAssigned || 0}</p>
+                <p className="text-gray-400 text-sm">Tasks Assigned</p>
+              </div>
+              <div className="bg-black p-4 rounded-lg">
+                <p className="text-2xl font-bold text-green-400">{selectedUserForDetails.tasksCompleted || 0}</p>
+                <p className="text-gray-400 text-sm">Tasks Completed</p>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div>
+              <h4 className="text-white font-medium mb-3">Recent Activity</h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3 p-3 bg-black rounded-lg">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-gray-300 text-sm">Completed 2 tasks this week</span>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-black rounded-lg">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <span className="text-gray-300 text-sm">Assigned to 3 active projects</span>
+                </div>
+                <div className="flex items-center space-x-3 p-3 bg-black rounded-lg">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                  <span className="text-gray-300 text-sm">Last active: Today</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 border-t border-gray-700 flex justify-end">
+            <button
+              onClick={() => {
+                setShowUserDetails(false);
+                setSelectedUserForDetails(null);
+              }}
+              className="btn btn-secondary"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderClientAssignmentModal = () => {
+    if (!showClientAssignment || !selectedUserForAssignment) return null;
+
+    const availableClients = clients.filter(client => !client.assignedTo || client.assignedTo === '');
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-lg border border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-700">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-white">
+                Assign Client to {selectedUserForAssignment.name}
+              </h2>
+              <button
+                onClick={() => {
+                  setShowClientAssignment(false);
+                  setSelectedUserForAssignment(null);
+                }}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          
+          <div className="p-6">
+            {availableClients.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="mx-auto mb-4 text-gray-600" size={48} />
+                <p className="text-gray-400 mb-4">No unassigned clients available</p>
+                <p className="text-gray-500 text-sm">All clients are currently assigned to team members</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-gray-300 mb-4">
+                  Select a client to assign to {selectedUserForAssignment.name}:
+                </p>
+                {availableClients.map((client) => (
+                  <div
+                    key={client.id}
+                    className="flex items-center justify-between p-4 bg-black rounded-lg border border-gray-700 hover:border-gray-600 transition-colors"
+                  >
+                    <div>
+                      <h4 className="text-white font-medium">{client.name}</h4>
+                      <p className="text-gray-400 text-sm">{client.email}</p>
+                      {client.company && (
+                        <p className="text-gray-500 text-sm">{client.company}</p>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleAssignClientToUser(client.id)}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Assign
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t border-gray-700 flex justify-end space-x-3">
+            <button
+              onClick={() => {
+                setShowClientAssignment(false);
+                setSelectedUserForAssignment(null);
+              }}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderDeleteConfirmationModal = () => {
+    if (!showDeleteConfirmation || !selectedUserForDeletion) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-lg border border-gray-700 max-w-md w-full">
+          <div className="p-6 border-b border-gray-700">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <Trash2 className="text-red-600" size={24} />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-white">Delete User</h2>
+                <p className="text-gray-400 text-sm">This action cannot be undone</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-6">
+            <p className="text-gray-300 mb-4">
+              Are you sure you want to delete <strong>{selectedUserForDeletion.name}</strong>?
+            </p>
+            <div className="bg-red-900/20 border border-red-700 rounded-lg p-4">
+              <p className="text-red-400 text-sm">
+                <strong>Warning:</strong> This will permanently remove the user and all associated data.
+                Any clients assigned to this user will become unassigned.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-6 border-t border-gray-700 flex justify-end space-x-3">
+            <button
+              onClick={() => {
+                setShowDeleteConfirmation(false);
+                setSelectedUserForDeletion(null);
+              }}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDeleteUser}
+              className="btn btn-primary bg-red-600 hover:bg-red-700 border-red-600"
+            >
+              <Trash2 size={16} />
+              Delete User
+            </button>
           </div>
         </div>
       </div>
@@ -593,6 +922,11 @@ export default function Admin() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {renderContent_Tab()}
         </div>
+        
+        {/* Modals */}
+        {renderUserDetailsModal()}
+        {renderClientAssignmentModal()}
+        {renderDeleteConfirmationModal()}
       </div>
     </Layout>
   );

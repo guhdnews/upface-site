@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { InquiryService, ClientService, FollowUpService } from '../../lib/crm-db';
 import { Inquiry, Client, FollowUp } from '../../lib/crm-types';
 import Link from 'next/link';
-import { Users, UserPlus, Calendar, AlertCircle, TrendingUp, Mail } from 'lucide-react';
+import { Users, UserPlus, Calendar, AlertCircle, TrendingUp, Mail, CheckSquare } from 'lucide-react';
 
 export default function CRMDashboard() {
   const { user, loading } = useAuth();
@@ -267,7 +267,7 @@ export default function CRMDashboard() {
           </div>
 
           {/* Navigation Links */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-4">
             <Link href="/crm/clients" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <Users className="mx-auto mb-2 text-blue-400" size={32} />
               <p className="text-white">Manage Clients</p>
@@ -275,6 +275,10 @@ export default function CRMDashboard() {
             <Link href="/crm/inquiries" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <Mail className="mx-auto mb-2 text-green-400" size={32} />
               <p className="text-white">View Inquiries</p>
+            </Link>
+            <Link href="/crm/tasks" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
+              <CheckSquare className="mx-auto mb-2 text-blue-400" size={32} />
+              <p className="text-white">Task Manager</p>
             </Link>
             <Link href="/crm/follow-ups" className="p-6 bg-gray-900 border border-gray-700 rounded-lg text-center hover:bg-gray-800 transition-colors">
               <Calendar className="mx-auto mb-2 text-yellow-400" size={32} />
