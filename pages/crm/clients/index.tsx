@@ -4,7 +4,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { ClientService } from '../../../lib/crm-db';
 import { Client, CLIENT_STATUSES } from '../../../lib/crm-types';
 import Link from 'next/link';
-import { Users, UserPlus, Search, Filter, Eye, Edit, Trash2 } from 'lucide-react';
+import { Users, UserPlus, Search, Filter, Eye, Edit, Trash2, UserCheck } from 'lucide-react';
 
 export default function ClientsPage() {
   const { user, loading } = useAuth();
@@ -12,7 +12,19 @@ export default function ClientsPage() {
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [assigningClient, setAssigningClient] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [assignedToFilter, setAssignedToFilter] = useState('');
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [bulkAssignUserId, setBulkAssignUserId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  // Mock users for assignment - in production, fetch from UserService
+  const mockUsers = [
+    { id: '1', name: 'Sarah Wilson', email: 'sarah@upface.dev', role: 'agent' },
+    { id: '2', name: 'Mike Johnson', email: 'mike@upface.dev', role: 'manager' },
+    { id: '3', name: 'Admin User', email: 'admin@upface.dev', role: 'admin' },
+  ];
 
   useEffect(() => {
     if (user) {
@@ -23,7 +35,7 @@ export default function ClientsPage() {
   useEffect(() => {
     filterClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clients, searchTerm, statusFilter]);
+  }, [clients, searchTerm, statusFilter, assignedToFilter]);
 
   const loadClients = async () => {
     try {
@@ -51,6 +63,14 @@ export default function ClientsPage() {
       filtered = filtered.filter(client => client.status === statusFilter);
     }
 
+    if (assignedToFilter) {
+      if (assignedToFilter === 'unassigned') {
+        filtered = filtered.filter(client => !client.assignedTo);
+      } else {
+        filtered = filtered.filter(client => client.assignedTo === assignedToFilter);
+      }
+    }
+
     setFilteredClients(filtered);
   };
 
@@ -64,6 +84,69 @@ export default function ClientsPage() {
         alert('Error deleting client. Please try again.');
       }
     }
+  };
+
+  const handleAssignClient = async (clientId: string, userId: string) => {
+    try {
+      await ClientService.updateClient(clientId, { assignedTo: userId });
+      setClients(clients.map(client => 
+        client.id === clientId 
+          ? { ...client, assignedTo: userId }
+          : client
+      ));
+      setAssigningClient(null);
+      setSelectedUserId('');
+    } catch (error) {
+      console.error('Error assigning client:', error);
+      alert('Error assigning client. Please try again.');
+    }
+  };
+
+  const getAssignedUserName = (userId: string | undefined) => {
+    if (!userId) return 'Unassigned';
+    const user = mockUsers.find(u => u.id === userId);
+    return user ? user.name : 'Unknown User';
+  };
+
+  const handleBulkAssign = async () => {
+    if (!bulkAssignUserId || selectedClients.length === 0) return;
+    
+    try {
+      // Bulk update clients
+      await Promise.all(
+        selectedClients.map(clientId => 
+          ClientService.updateClient(clientId, { assignedTo: bulkAssignUserId })
+        )
+      );
+      
+      setClients(clients.map(client => 
+        selectedClients.includes(client.id)
+          ? { ...client, assignedTo: bulkAssignUserId }
+          : client
+      ));
+      
+      setSelectedClients([]);
+      setBulkAssignUserId('');
+    } catch (error) {
+      console.error('Error bulk assigning clients:', error);
+      alert('Error assigning clients. Please try again.');
+    }
+  };
+
+  const toggleClientSelection = (clientId: string) => {
+    setSelectedClients(prev => 
+      prev.includes(clientId)
+        ? prev.filter(id => id !== clientId)
+        : [...prev, clientId]
+    );
+  };
+
+  const selectAllClients = () => {
+    setSelectedClients(
+      selectedClients.length === filteredClients.length
+        ? []
+        : filteredClients.map(client => client.id)
+    );
   };
 
   const getStatusColor = (status: string) => {
@@ -112,7 +195,7 @@ export default function ClientsPage() {
 
           {/* Filters */}
           <div className="bg-gray-900 p-6 border border-gray-700 rounded-lg mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
@@ -138,15 +221,71 @@ export default function ClientsPage() {
                   ))}
                 </select>
               </div>
+              <div className="relative">
+                <UserCheck className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <select
+                  value={assignedToFilter}
+                  onChange={(e) => setAssignedToFilter(e.target.value)}
+                  className="form-select pl-10"
+                >
+                  <option value="">All assignments</option>
+                  <option value="unassigned">Unassigned</option>
+                  {mockUsers.map(user => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => {setSearchTerm(''); setStatusFilter('');}}
+                  onClick={() => {
+                    setSearchTerm(''); 
+                    setStatusFilter('');
+                    setAssignedToFilter('');
+                  }}
                   className="btn btn-secondary flex-1"
                 >
                   Clear Filters
                 </button>
               </div>
             </div>
+            
+            {/* Bulk Assignment */}
+            {selectedClients.length > 0 && (
+              <div className="border-t border-gray-700 pt-4">
+                <div className="flex items-center gap-4">
+                  <span className="text-gray-300 text-sm">
+                    {selectedClients.length} client(s) selected
+                  </span>
+                  <select
+                    value={bulkAssignUserId}
+                    onChange={(e) => setBulkAssignUserId(e.target.value)}
+                    className="form-select text-sm"
+                  >
+                    <option value="">Assign to...</option>
+                    {mockUsers.map(user => (
+                      <option key={user.id} value={user.id}>
+                        {user.name} ({user.role})
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={handleBulkAssign}
+                    disabled={!bulkAssignUserId}
+                    className="btn btn-primary text-sm disabled:opacity-50"
+                  >
+                    Assign Selected
+                  </button>
+                  <button
+                    onClick={() => setSelectedClients([])}
+                    className="btn btn-secondary text-sm"
+                  >
+                    Clear Selection
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Clients List */}
@@ -176,9 +315,18 @@ export default function ClientsPage() {
                 <table className="w-full">
                   <thead className="bg-black border-b border-gray-700">
                     <tr>
+                      <th className="text-left p-4 text-gray-300 font-medium">
+                        <input
+                          type="checkbox"
+                          checked={selectedClients.length === filteredClients.length && filteredClients.length > 0}
+                          onChange={selectAllClients}
+                          className="rounded border-gray-300"
+                        />
+                      </th>
                       <th className="text-left p-4 text-gray-300 font-medium">Client</th>
                       <th className="text-left p-4 text-gray-300 font-medium">Company</th>
                       <th className="text-left p-4 text-gray-300 font-medium">Status</th>
+                      <th className="text-left p-4 text-gray-300 font-medium">Assigned To</th>
                       <th className="text-left p-4 text-gray-300 font-medium">Source</th>
                       <th className="text-left p-4 text-gray-300 font-medium">Created</th>
                       <th className="text-left p-4 text-gray-300 font-medium">Actions</th>
@@ -190,8 +338,16 @@ export default function ClientsPage() {
                         key={client.id} 
                         className={`border-b border-gray-800 hover:bg-gray-800 transition-colors ${
                           index % 2 === 0 ? 'bg-gray-900' : 'bg-black'
-                        }`}
+                        } ${selectedClients.includes(client.id) ? 'ring-2 ring-blue-500/50' : ''}`}
                       >
+                        <td className="p-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedClients.includes(client.id)}
+                            onChange={() => toggleClientSelection(client.id)}
+                            className="rounded border-gray-300"
+                          />
+                        </td>
                         <td className="p-4">
                           <div>
                             <h3 className="text-white font-medium">{client.name}</h3>
@@ -207,6 +363,53 @@ export default function ClientsPage() {
                           <span className={`px-3 py-1 text-xs font-medium rounded-full bg-${getStatusColor(client.status)}-600 text-white`}>
                             {CLIENT_STATUSES.find(s => s.value === client.status)?.label || client.status}
                           </span>
+                        </td>
+                        <td className="p-4">
+                          {assigningClient === client.id ? (
+                            <div className="flex items-center gap-2">
+                              <select
+                                value={selectedUserId}
+                                onChange={(e) => setSelectedUserId(e.target.value)}
+                                className="form-select text-sm py-1"
+                              >
+                                <option value="">Select user...</option>
+                                {mockUsers.map(user => (
+                                  <option key={user.id} value={user.id}>
+                                    {user.name} ({user.role})
+                                  </option>
+                                ))}
+                              </select>
+                              <button
+                                onClick={() => handleAssignClient(client.id, selectedUserId)}
+                                disabled={!selectedUserId}
+                                className="btn btn-primary text-xs px-2 py-1 disabled:opacity-50"
+                              >
+                                Assign
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setAssigningClient(null);
+                                  setSelectedUserId('');
+                                }}
+                                className="btn btn-secondary text-xs px-2 py-1"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-300 text-sm">
+                                {getAssignedUserName(client.assignedTo)}
+                              </span>
+                              <button
+                                onClick={() => setAssigningClient(client.id)}
+                                className="p-1 text-blue-400 hover:text-blue-300"
+                                title="Assign client"
+                              >
+                                <UserCheck size={14} />
+                              </button>
+                            </div>
+                          )}
                         </td>
                         <td className="p-4">
                           <span className="text-gray-300 text-sm capitalize">

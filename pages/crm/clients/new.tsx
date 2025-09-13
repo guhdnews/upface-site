@@ -18,8 +18,16 @@ export default function NewClient() {
     company: '',
     acquisitionSource: 'website' as const,
     status: 'lead' as const,
+    assignedTo: '',
     notes: ''
   });
+
+  // Mock users for assignment - in production, fetch from UserService
+  const mockUsers = [
+    { id: '1', name: 'Sarah Wilson', email: 'sarah@upface.dev', role: 'agent' },
+    { id: '2', name: 'Mike Johnson', email: 'mike@upface.dev', role: 'manager' },
+    { id: '3', name: 'Admin User', email: 'admin@upface.dev', role: 'admin' },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +35,12 @@ export default function NewClient() {
 
     setIsSubmitting(true);
     try {
-      const clientId = await ClientService.createClient({
+      const clientData = {
         ...formData,
-        assignedTo: user.uid
-      });
+        assignedTo: formData.assignedTo || undefined
+      };
+      
+      const clientId = await ClientService.createClient(clientData);
       
       router.push(`/crm/clients/${clientId}`);
     } catch (error) {
@@ -209,6 +219,30 @@ export default function NewClient() {
                       ))}
                     </select>
                   </div>
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="assignedTo" className="block text-gray-300 text-sm font-medium mb-2">
+                    Assign To
+                  </label>
+                  <select
+                    id="assignedTo"
+                    name="assignedTo"
+                    value={formData.assignedTo}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className="form-select"
+                  >
+                    <option value="">Leave unassigned</option>
+                    {mockUsers.map(user => (
+                      <option key={user.id} value={user.id}>
+                        {user.name} ({user.role})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-gray-500 text-xs mt-2">
+                    Assign this client to a team member or leave unassigned
+                  </p>
                 </div>
               </div>
 
