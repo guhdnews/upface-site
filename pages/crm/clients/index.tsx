@@ -104,7 +104,7 @@ export default function ClientsPage() {
                 Back to Dashboard
               </Link>
               <Link href="/crm/clients/new" className="btn btn-primary">
-                <UserPlus size={20} className="mr-2" />
+                <UserPlus size={20} />
                 Add Client
               </Link>
             </div>
@@ -158,7 +158,7 @@ export default function ClientsPage() {
                   <h2 className="mb-4">No clients yet</h2>
                   <p className="text-gray-400 mb-6">Start building your client base by adding your first client.</p>
                   <Link href="/crm/clients/new" className="btn btn-primary">
-                    <UserPlus size={20} className="mr-2" />
+                    <UserPlus size={20} />
                     Add Your First Client
                   </Link>
                 </>

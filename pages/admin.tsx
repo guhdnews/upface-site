@@ -15,20 +15,29 @@ import {
   DollarSign,
   Calendar,
   BarChart3,
-  LogOut
+  LogOut,
+  Shield,
+  UserCog
 } from 'lucide-react';
 
-// Mock data for freelancers - will be enhanced later
-const mockFreelancers = [
-  { id: 1, name: 'Sarah Wilson', skill: 'Cold Email', assigned: 25, completed: 18 },
-  { id: 2, name: 'Mike Johnson', skill: 'Lead Generation', assigned: 15, completed: 12 },
+// Mock data for users - will be enhanced later
+const mockUsers = [
+  { id: 1, name: 'Sarah Wilson', email: 'sarah@upface.dev', role: 'agent', status: 'active', tasksAssigned: 25, tasksCompleted: 18 },
+  { id: 2, name: 'Mike Johnson', email: 'mike@upface.dev', role: 'manager', status: 'active', tasksAssigned: 15, tasksCompleted: 12 },
+  { id: 3, name: 'Admin User', email: 'admin@upface.dev', role: 'admin', status: 'active', tasksAssigned: 0, tasksCompleted: 0 },
 ];
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('crm');
   const [clients, setClients] = useState<Client[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [freelancers] = useState(mockFreelancers);
+  const [users] = useState(mockUsers);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [newUser, setNewUser] = useState({
+    name: '',
+    email: '',
+    role: 'agent' as 'agent' | 'manager' | 'admin'
+  });
   const [stats, setStats] = useState({
     totalClients: 0,
     totalInquiries: 0,
@@ -99,7 +108,7 @@ export default function Admin() {
   const tabs = [
     { id: 'crm', name: 'CRM', icon: <Users size={20} /> },
     { id: 'content', name: 'Content', icon: <FileText size={20} /> },
-    { id: 'freelancers', name: 'Freelancers', icon: <UserCheck size={20} /> },
+    { id: 'users', name: 'Users', icon: <UserCog size={20} /> },
     { id: 'analytics', name: 'Analytics', icon: <BarChart3 size={20} /> },
   ];
 
@@ -232,53 +241,199 @@ export default function Admin() {
     </div>
   );
 
-  const renderFreelancers = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Freelancer Panel</h2>
-        <button className="btn btn-primary">
-          <Plus size={16} />
-          Add Freelancer
-        </button>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {freelancers.map((freelancer) => (
-          <div key={freelancer.id} className="glass rounded-xl p-6">
-            <div className="flex justify-between items-start mb-4">
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin': return 'bg-red-600/20 text-red-400';
+      case 'manager': return 'bg-blue-600/20 text-blue-400';
+      case 'agent': return 'bg-green-600/20 text-green-400';
+      default: return 'bg-gray-600/20 text-gray-400';
+    }
+  };
+
+  const getRoleIcon = (role: string) => {
+    switch (role) {
+      case 'admin': return <Shield size={16} />;
+      case 'manager': return <UserCog size={16} />;
+      case 'agent': return <UserCheck size={16} />;
+      default: return <Users size={16} />;
+    }
+  };
+
+  const handleAddUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement actual user creation
+    console.log('Adding user:', newUser);
+    alert('User creation will be implemented with Firebase Admin SDK');
+    setShowAddUser(false);
+    setNewUser({ name: '', email: '', role: 'agent' });
+  };
+
+  const renderUsers = () => {
+
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-white">User Management</h2>
+          <button 
+            onClick={() => setShowAddUser(!showAddUser)}
+            className="btn btn-primary"
+          >
+            <Plus size={16} />
+            Add User
+          </button>
+        </div>
+
+        {/* Add User Form */}
+        {showAddUser && (
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Add New User</h3>
+            <form onSubmit={handleAddUser} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newUser.name}
+                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                    className="form-input"
+                    placeholder="Enter full name"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={newUser.email}
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                    className="form-input"
+                    placeholder="user@upface.dev"
+                    required
+                  />
+                </div>
+              </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">{freelancer.name}</h3>
-                <p className="text-gray-400 text-sm">{freelancer.skill}</p>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Role
+                </label>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value as 'agent' | 'manager' | 'admin' })}
+                  className="form-select"
+                >
+                  <option value="agent">Agent - Can manage assigned clients</option>
+                  <option value="manager">Manager - Can manage team and all clients</option>
+                  <option value="admin">Admin - Full system access</option>
+                </select>
               </div>
-              <button className="text-gray-400 hover:text-primary-400">
-                <Edit3 size={16} />
-              </button>
-            </div>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Assigned:</span>
-                <span className="text-white">{freelancer.assigned}</span>
+              <div className="flex gap-3">
+                <button type="submit" className="btn btn-primary">
+                  Create User
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setShowAddUser(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancel
+                </button>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Completed:</span>
-                <span className="text-green-400">{freelancer.completed}</span>
-              </div>
-              <div className="w-full bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-primary-500 h-2 rounded-full" 
-                  style={{ width: `${(freelancer.completed / freelancer.assigned) * 100}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-400 text-center">
-                {Math.round((freelancer.completed / freelancer.assigned) * 100)}% Complete
-              </p>
-            </div>
+            </form>
           </div>
-        ))}
+        )}
+        
+        {/* Users List */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {users.map((user) => (
+            <div key={user.id} className="bg-gray-900 border border-gray-700 rounded-xl p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-white">{user.name}</h3>
+                  <p className="text-gray-400 text-sm">{user.email}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    {getRoleIcon(user.role)}
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(user.role)}`}>
+                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    </span>
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      user.status === 'active' ? 'bg-green-600/20 text-green-400' : 'bg-gray-600/20 text-gray-400'
+                    }`}>
+                      {user.status}
+                    </span>
+                  </div>
+                </div>
+                <button className="text-gray-400 hover:text-primary-400">
+                  <Edit3 size={16} />
+                </button>
+              </div>
+              
+              {user.role !== 'admin' && (
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Tasks Assigned:</span>
+                    <span className="text-white">{user.tasksAssigned}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Completed:</span>
+                    <span className="text-green-400">{user.tasksCompleted}</span>
+                  </div>
+                  {user.tasksAssigned > 0 && (
+                    <>
+                      <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div 
+                          className="bg-primary-500 h-2 rounded-full" 
+                          style={{ width: `${(user.tasksCompleted / user.tasksAssigned) * 100}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-400 text-center">
+                        {Math.round((user.tasksCompleted / user.tasksAssigned) * 100)}% Complete
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
+              
+              {user.role === 'admin' && (
+                <div className="text-center py-4">
+                  <Shield className="mx-auto mb-2 text-red-400" size={32} />
+                  <p className="text-gray-400 text-sm">System Administrator</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Role Descriptions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <UserCheck className="text-green-400" size={20} />
+              <h4 className="text-white font-medium">Agent</h4>
+            </div>
+            <p className="text-gray-400 text-sm">Can manage assigned clients and tasks</p>
+          </div>
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <UserCog className="text-blue-400" size={20} />
+              <h4 className="text-white font-medium">Manager</h4>
+            </div>
+            <p className="text-gray-400 text-sm">Can manage team members and all clients</p>
+          </div>
+          <div className="bg-gray-900 border border-gray-700 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="text-red-400" size={20} />
+              <h4 className="text-white font-medium">Admin</h4>
+            </div>
+            <p className="text-gray-400 text-sm">Full system access and configuration</p>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAnalytics = () => (
     <div className="space-y-6">
@@ -317,8 +472,8 @@ export default function Admin() {
             <UserCheck className="text-orange-400" size={24} />
             <h3 className="text-lg font-semibold text-white">Team</h3>
           </div>
-          <p className="text-2xl font-bold text-orange-400">{freelancers.length}</p>
-          <p className="text-gray-400 text-sm">Active freelancers</p>
+          <p className="text-2xl font-bold text-orange-400">{users.filter(u => u.status === 'active').length}</p>
+          <p className="text-gray-400 text-sm">Active users</p>
         </div>
       </div>
       
@@ -347,7 +502,7 @@ export default function Admin() {
     switch (activeTab) {
       case 'crm': return renderCRM();
       case 'content': return renderContent();
-      case 'freelancers': return renderFreelancers();
+      case 'users': return renderUsers();
       case 'analytics': return renderAnalytics();
       default: return renderCRM();
     }

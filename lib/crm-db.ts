@@ -243,6 +243,24 @@ export class FollowUpService {
     } as FollowUp));
   }
 
+  static async getFollowUpsByAssignee(userId: string): Promise<FollowUp[]> {
+    const q = query(
+      collection(db, COLLECTIONS.FOLLOW_UPS),
+      where('assignedTo', '==', userId),
+      orderBy('dueDate', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        dueDate: convertTimestampToDate(data.dueDate),
+        completedDate: data.completedDate ? convertTimestampToDate(data.completedDate) : undefined,
+      } as FollowUp;
+    });
+  }
+
   static async completeFollowUp(followUpId: string): Promise<void> {
     const docRef = doc(db, COLLECTIONS.FOLLOW_UPS, followUpId);
     await updateDoc(docRef, {
