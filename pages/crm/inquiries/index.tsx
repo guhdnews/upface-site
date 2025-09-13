@@ -155,7 +155,7 @@ export default function InquiriesPage() {
                             key={source.value}
                             onClick={() => convertToClient(inquiry, source.value)}
                             disabled={convertingId === inquiry.id}
-                            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+                            className="btn btn-primary text-sm disabled:opacity-50"
                           >
                             {convertingId === inquiry.id ? (
                               <>

@@ -527,6 +527,18 @@ li::before {
   border-color: var(--color-black);
 }
 
+.btn-accent {
+  background: #d97706;
+  color: var(--color-white);
+  border-color: #d97706;
+}
+
+.btn-accent:hover {
+  background: #b45309;
+  color: var(--color-white);
+  border-color: #b45309;
+}
+
 /* Button spacing */
 .btn + .btn {
   margin-left: var(--space-3);

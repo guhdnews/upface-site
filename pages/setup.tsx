@@ -243,7 +243,7 @@ export default function Setup() {
             </div>
 
             {/* Navigation */}
-            <div className="mt-8 text-center space-x-4">
+            <div className="mt-8 btn-group">
               <Link href="/" className="btn btn-secondary">
                 Back to Home
               </Link>

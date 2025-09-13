@@ -108,11 +108,11 @@ export default function Admin() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Client Management</h2>
         <div className="flex gap-3">
-          <Link href="/crm" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <Link href="/crm" className="btn btn-secondary">
             <Users size={16} />
             CRM Dashboard
           </Link>
-          <Link href="/crm/clients/new" className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <Link href="/crm/clients/new" className="btn btn-primary">
             <Plus size={16} />
             Add Client
           </Link>
@@ -125,11 +125,11 @@ export default function Admin() {
           <h3 className="text-xl font-semibold text-white mb-4">No clients yet</h3>
           <p className="text-gray-400 mb-6">Start building your client base by adding your first client or checking recent inquiries.</p>
           <div className="flex gap-4 justify-center">
-            <Link href="/crm/clients/new" className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg flex items-center gap-2">
+            <Link href="/crm/clients/new" className="btn btn-primary">
               <Plus size={20} />
               Add First Client
             </Link>
-            <Link href="/crm/inquiries" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2">
+            <Link href="/crm/inquiries" className="btn btn-secondary">
               <Users size={20} />
               View Inquiries
             </Link>
@@ -236,7 +236,7 @@ export default function Admin() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Freelancer Panel</h2>
-        <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+        <button className="btn btn-primary">
           <Plus size={16} />
           Add Freelancer
         </button>
@@ -371,7 +371,7 @@ export default function Admin() {
                 </div>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg transition-colors duration-200"
+                  className="btn btn-secondary"
                 >
                   <LogOut size={16} />
                   Sign Out
