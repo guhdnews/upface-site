@@ -20,9 +20,6 @@ export default function Footer() {
             <Link href="/packages" className="header-menu-link">
               Packages
             </Link>
-            <Link href="/demos" className="header-menu-link">
-              Work
-            </Link>
             <Link href="/about" className="header-menu-link">
               About
             </Link>

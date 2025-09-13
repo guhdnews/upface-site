@@ -451,6 +451,32 @@ li::before {
   align-items: center;
 }
 
+/* Ensure consistent button alignment on mobile */
+@media (max-width: 767px) {
+  .btn-group {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .btn-group .btn {
+    width: 220px;
+    max-width: calc(100vw - 48px);
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Override any justify-center conflicts on mobile */
+  .btn-group.justify-center {
+    justify-content: center;
+  }
+}
+
 /* 9. GRID SYSTEMS */
 .feature-grid {
   display: grid;

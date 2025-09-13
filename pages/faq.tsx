@@ -114,7 +114,7 @@ export default function FAQ() {
           
           <div className="max-w-4xl mx-auto space-y-16">
             {faqs.map((category, categoryIndex) => (
-              <div key={categoryIndex}>
+              <div key={categoryIndex} className={categoryIndex > 0 ? 'pt-8' : ''}>
                 <h2 className="text-3xl font-light text-white mb-8 text-center">{category.category}</h2>
                 <div className="space-y-4">
                   {category.questions.map((faq, questionIndex) => {
@@ -135,7 +135,7 @@ export default function FAQ() {
                           )}
                         </button>
                         {isOpen && (
-                          <div className="px-6 pb-6">
+                          <div className="px-6 pb-6 pl-8">
                             <p className="text-gray-400 font-light leading-relaxed">{faq.a}</p>
                           </div>
                         )}

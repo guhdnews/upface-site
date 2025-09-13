@@ -9,7 +9,6 @@ export default function Header() {
   const navigation = [
     { name: 'Services', href: '/services' },
     { name: 'Packages', href: '/packages' },
-    { name: 'Work', href: '/demos' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
@@ -33,11 +32,6 @@ export default function Header() {
             <li>
               <Link href="/packages" className="header-menu-link">
                 Packages
-              </Link>
-            </li>
-            <li>
-              <Link href="/demos" className="header-menu-link">
-                Work
               </Link>
             </li>
             <li>

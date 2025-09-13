@@ -1,29 +1,6 @@
 import Layout from '../components/Layout';
 import Link from 'next/link';
 
-const demoProjects = [
-  {
-    title: 'Bella Vista Restaurant',
-    category: 'Restaurant Website',
-    description: 'Modern restaurant site with online ordering, menu showcase, and reservation system.',
-    image: '/assets/demo-restaurant-1.png',
-    features: ['Online Ordering', 'Reservation System', 'Menu Display', 'Mobile Responsive']
-  },
-  {
-    title: 'Elite Construction',
-    category: 'Construction Website',
-    description: 'Professional construction company site with project gallery and quote system.',
-    image: '/assets/demo-construction-1.png',
-    features: ['Project Gallery', 'Quote Calculator', 'Team Profiles', 'Client Testimonials']
-  },
-  {
-    title: 'FreshClean Pro',
-    category: 'Cleaning Service App',
-    description: 'Full-service cleaning app with booking, tracking, and customer management.',
-    image: '/assets/demo-cleaning-app.png',
-    features: ['Online Booking', 'Service Tracking', 'Payment Processing', 'Customer Portal']
-  }
-];
 
 export default function Home() {
   return (
@@ -46,8 +23,8 @@ export default function Home() {
               <Link href="/contact" className="btn btn-primary">
                 Get Started
               </Link>
-              <Link href="/demos" className="btn btn-secondary">
-                View Work
+              <Link href="/services" className="btn btn-secondary">
+                View Services
               </Link>
             </div>
           </div>
@@ -77,41 +54,43 @@ export default function Home() {
         ))}
       </section>
 
-      {/* Our Work Section */}
+      {/* Our Services Section */}
       <section className="section section--black">
         <div className="section-container">
           <div className="text-center mb-2xl">
-            <h2>Our Work</h2>
+            <h2>Our Services</h2>
             <p className="text-large">
-              Real solutions for real businesses
+              Comprehensive solutions for your business growth
             </p>
           </div>
           
-          <div>
-            {demoProjects.map((project, index) => (
-              <div key={index} className="two-column">
-                <div className="column-left">
-                  <h3>{project.title}</h3>
-                  <p className="text-large mb-lg">
-                    {project.description}
-                  </p>
-                  <ul className="mb-lg">
-                    {project.features.map((feature, idx) => (
-                      <li key={idx}>{feature}</li>
-                    ))}
-                  </ul>
-                  <Link href="/demos" className="btn btn-primary">
-                    View Project
-                  </Link>
-                </div>
-                
-                <div className="column-right">
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                    <p className="text-gray-500 text-lg">Project Preview</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="feature-grid">
+            <div className="feature-card">
+              <h3>Web Development</h3>
+              <p className="text-large">
+                Modern, lightning-fast websites built with the latest technologies to drive your business forward.
+              </p>
+            </div>
+            
+            <div className="feature-card">
+              <h3>Mobile Applications</h3>
+              <p className="text-large">
+                Native iOS and Android apps that engage customers and streamline your business operations.
+              </p>
+            </div>
+            
+            <div className="feature-card">
+              <h3>Custom Solutions</h3>
+              <p className="text-large">
+                Tailored systems and integrations built specifically for your unique business needs.
+              </p>
+            </div>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Link href="/services" className="btn btn-primary">
+              View All Services
+            </Link>
           </div>
         </div>
       </section>
