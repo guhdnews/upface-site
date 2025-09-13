@@ -114,8 +114,8 @@ export default function FAQ() {
           
           <div className="max-w-4xl mx-auto space-y-16">
             {faqs.map((category, categoryIndex) => (
-              <div key={categoryIndex} className={categoryIndex > 0 ? 'pt-20' : 'pt-8'}>
-                <h2 className="text-3xl font-light text-white mb-8 text-center pt-20">{category.category}</h2>
+              <div key={categoryIndex} className={categoryIndex > 0 ? 'pt-32' : 'pt-8'}>
+                <h2 className="text-3xl font-light text-white mb-8 text-center pt-32">{category.category}</h2>
                 <div className="space-y-4">
                   {category.questions.map((faq, questionIndex) => {
                     const id = `${categoryIndex}-${questionIndex}`;
@@ -149,7 +149,7 @@ export default function FAQ() {
             ))}
           </div>
           
-          <div className="text-center mt-32 pt-16 border-t border-gray-800 pb-16">
+          <div className="text-center mt-32 pt-24 border-t border-gray-800 pb-32">
             <h2 className="text-3xl font-light text-white mb-6">Still have questions?</h2>
             <p className="text-xl text-gray-400 font-light mb-8 max-w-2xl mx-auto">
               We&apos;re here to help. Get in touch and we&apos;ll answer any questions about your project.
