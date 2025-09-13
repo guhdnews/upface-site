@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="section--hero section--black">
+      <section className="section--hero section--black hero-with-background">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <h1>

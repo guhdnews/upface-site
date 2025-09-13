@@ -1,0 +1,50 @@
+rules_version = '2';
+
+// Storage rules for Upface CRM file uploads
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Client documents and files
+    match /clients/{clientId}/{fileName} {
+      allow read: if request.auth != null && 
+                     (isAdmin() || hasPermission('view_clients'));
+      allow write: if request.auth != null && 
+                      (isAdmin() || hasPermission('edit_clients')) &&
+                      request.resource.size < 10 * 1024 * 1024 && // 10MB limit
+                      request.resource.contentType.matches('image/.*|application/pdf|text/.*');
+      allow delete: if request.auth != null && 
+                       (isAdmin() || hasPermission('delete_clients'));
+    }
+    
+    // User profile pictures
+    match /users/{userId}/profile/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                      (request.auth.uid == userId || isAdmin()) &&
+                      request.resource.size < 2 * 1024 * 1024 && // 2MB limit
+                      request.resource.contentType.matches('image/.*');
+      allow delete: if request.auth != null && 
+                       (request.auth.uid == userId || isAdmin());
+    }
+    
+    // Company documents and assets
+    match /company/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && isAdmin() &&
+                      request.resource.size < 50 * 1024 * 1024; // 50MB limit
+      allow delete: if request.auth != null && isAdmin();
+    }
+    
+    // Helper functions
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function hasPermission(permission) {
+      return request.auth != null &&
+             exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+             permission in get(/databases/(default)/documents/users/$(request.auth.uid)).data.permissions;
+    }
+  }
+}

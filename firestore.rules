@@ -1,0 +1,59 @@
+rules_version='2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - users can read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Clients collection - authenticated users with permissions can access
+    match /clients/{clientId} {
+      allow read: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'view_clients'));
+      allow create: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'edit_clients'));
+      allow update: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'edit_clients') || resource.data.assignedTo == request.auth.uid);
+      allow delete: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'delete_clients'));
+    }
+    
+    // Inquiries collection - authenticated users with permissions can access
+    match /inquiries/{inquiryId} {
+      allow read: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'view_inquiries'));
+      allow create: if true; // Allow contact form submissions from public
+      allow update: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'edit_clients'));
+      allow delete: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Interactions collection
+    match /interactions/{interactionId} {
+      allow read: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'view_clients'));
+      allow create, update: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'edit_clients'));
+      allow delete: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Follow-ups collection
+    match /followUps/{followUpId} {
+      allow read: if request.auth != null && (isAdmin(request.auth.uid) || resource.data.userId == request.auth.uid || hasPermission(request.auth.uid, 'view_clients'));
+      allow create, update: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'edit_clients'));
+      allow delete: if request.auth != null && (isAdmin(request.auth.uid) || resource.data.userId == request.auth.uid);
+    }
+    
+    // Profile views collection
+    match /profileViews/{viewId} {
+      allow read: if request.auth != null && (isAdmin(request.auth.uid) || hasPermission(request.auth.uid, 'view_clients'));
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && isAdmin(request.auth.uid);
+    }
+    
+    // Helper functions
+    function isAdmin(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId)) && 
+             get(/databases/$(database)/documents/users/$(userId)).data.role == 'admin';
+    }
+    
+    function hasPermission(userId, permission) {
+      return exists(/databases/$(database)/documents/users/$(userId)) && 
+             permission in get(/databases/$(database)/documents/users/$(userId)).data.permissions;
+    }
+  }
+}

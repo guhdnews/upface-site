@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Layout from '../components/Layout';
 import { useAuth } from '../contexts/AuthContext';
 import { LogIn, Eye, EyeOff } from 'lucide-react';
@@ -22,9 +23,23 @@ export default function Login() {
     try {
       await signIn(email, password);
       router.push('/admin');
-    } catch (error) {
-      setError('Failed to sign in. Please check your credentials.');
+    } catch (error: unknown) {
       console.error('Sign in error:', error);
+      
+      const errorObj = error as { code?: string; message?: string };
+      if (errorObj?.code === 'auth/configuration-not-found' || errorObj?.message?.includes('CONFIGURATION_NOT_FOUND')) {
+        setError('Firebase Authentication is not set up yet. Please follow the setup instructions below.');
+      } else if (errorObj?.code === 'auth/user-not-found') {
+        setError('No user found with this email address.');
+      } else if (errorObj?.code === 'auth/wrong-password') {
+        setError('Incorrect password.');
+      } else if (errorObj?.code === 'auth/invalid-email') {
+        setError('Invalid email address.');
+      } else if (errorObj?.code === 'auth/too-many-requests') {
+        setError('Too many failed attempts. Please try again later.');
+      } else {
+        setError('Failed to sign in. Please check your credentials or complete Firebase setup.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -51,14 +66,16 @@ export default function Login() {
               </div>
             )}
 
-            {/* Demo Credentials */}
-            <div className="mb-6 p-4 bg-blue-600/20 border border-blue-600/30 rounded-lg">
-              <p className="text-blue-400 text-sm font-medium mb-2">Demo Credentials:</p>
-              <p className="text-blue-300 text-xs">Email: admin@upface.dev</p>
-              <p className="text-blue-300 text-xs">Password: upface2025</p>
-              <p className="text-gray-400 text-xs mt-2">
-                * Set up your Firebase project to enable real authentication
-              </p>
+            {/* Setup Instructions */}
+            <div className="mb-6 p-4 bg-yellow-600/20 border border-yellow-600/30 rounded-lg">
+              <p className="text-yellow-400 text-sm font-medium mb-2">🔧 Firebase Auth Setup Required:</p>
+              <div className="text-yellow-300 text-xs space-y-1">
+                <p>1. Go to <a href="https://console.firebase.google.com/project/upface-site/authentication" target="_blank" className="underline">Firebase Console → Authentication</a></p>
+                <p>2. Click &quot;Get started&quot; to enable Authentication</p>
+                <p>3. Go to &quot;Sign-in method&quot; → Enable &quot;Email/Password&quot;</p>
+                <p>4. Go to &quot;Users&quot; → Add your admin user manually</p>
+                <p className="text-gray-400 mt-2">Then you can log in with your created credentials</p>
+              </div>
             </div>
 
             {/* Form */}
@@ -123,6 +140,11 @@ export default function Login() {
 
             {/* Footer */}
             <div className="mt-8 text-center">
+              <div className="mb-4">
+                <Link href="/setup" className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-200 inline-flex items-center gap-2">
+                  First Time Setup
+                </Link>
+              </div>
               <p className="text-gray-400 text-sm">
                 Need help?{' '}
                 <a href="mailto:support@upface.dev" className="text-primary-400 hover:text-primary-300">
