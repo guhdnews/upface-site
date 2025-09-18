@@ -44,6 +44,13 @@ export default function Setup() {
     loadSetupStatus();
   }, []);
 
+  // Prevent setup if user is already authenticated and system doesn't need setup
+  useEffect(() => {
+    if (user && setupStatus && !setupStatus.needsSetup && (!userProfile || !['owner', 'admin'].includes(userProfile.role))) {
+      router.push('/intranet');
+    }
+  }, [user, setupStatus, userProfile, router]);
+
   const loadSetupStatus = async () => {
     try {
       const status = await UserSetupService.getSetupStatus();
@@ -57,6 +64,17 @@ export default function Setup() {
 
   const handleCreateOwner = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Re-check setup status to prevent race conditions
+    const currentStatus = await UserSetupService.getSetupStatus();
+    if (!currentStatus.needsSetup) {
+      setCreateResult({
+        success: false,
+        message: 'System setup has already been completed by another user.'
+      });
+      await loadSetupStatus();
+      return;
+    }
     
     if (ownerData.password !== ownerData.confirmPassword) {
       setCreateResult({
@@ -137,6 +155,17 @@ export default function Setup() {
   const handlePromoteToOwner = async () => {
     if (!user) return;
     
+    // Re-check setup status
+    const currentStatus = await UserSetupService.getSetupStatus();
+    if (!currentStatus.needsSetup) {
+      setCreateResult({
+        success: false,
+        message: 'System setup has already been completed.'
+      });
+      await loadSetupStatus();
+      return;
+    }
+    
     setCreating(true);
     try {
       const result = await UserSetupService.promoteToOwner(user.uid);
@@ -145,7 +174,9 @@ export default function Setup() {
       if (result.success) {
         await loadSetupStatus();
         // Refresh user profile
-        window.location.reload();
+        setTimeout(() => {
+          window.location.href = '/intranet';
+        }, 2000);
       }
     } catch (error) {
       console.error('Error promoting to owner:', error);

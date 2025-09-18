@@ -18,7 +18,8 @@ import {
   Plus,
   ArrowRight,
   Activity,
-  BarChart3
+  BarChart3,
+  Shield
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -92,21 +93,16 @@ export default function IntranetDashboard() {
   const [userRole, setUserRole] = useState<string>('agent');
   const [userPermissions, setUserPermissions] = useState<string[]>([]);
   const [stats, setStats] = useState<DashboardStats>({
-    tasksCompleted: 12,
-    totalTasks: 18,
-    upcomingMeetings: 3,
-    unreadMessages: 5,
-    thisMonthSales: 45000,
-    totalLeads: 23,
-    timeOffBalance: 12.5,
-    performanceScore: 87
+    tasksCompleted: 0,
+    totalTasks: 0,
+    upcomingMeetings: 0,
+    unreadMessages: 0,
+    thisMonthSales: 0,
+    totalLeads: 0,
+    timeOffBalance: 0,
+    performanceScore: 0
   });
-  const [recentActivity] = useState([
-    { id: 1, type: 'task', message: 'Completed client follow-up for ABC Corp', time: '2 hours ago', icon: CheckSquare },
-    { id: 2, type: 'lead', message: 'New lead assigned: John Smith - Software Co', time: '4 hours ago', icon: Target },
-    { id: 3, type: 'message', message: 'Message from Sarah Johnson', time: '6 hours ago', icon: MessageSquare },
-    { id: 4, type: 'training', message: 'Completed Sales Fundamentals module', time: '1 day ago', icon: Award }
-  ]);
+  const [recentActivity] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -202,10 +198,10 @@ export default function IntranetDashboard() {
                 <div>
                   <p className="text-sm text-gray-600">Tasks</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {stats.tasksCompleted}/{stats.totalTasks}
+                    {stats.totalTasks === 0 ? '0' : `${stats.tasksCompleted}/${stats.totalTasks}`}
                   </p>
-                  <p className="text-sm text-green-600 mt-1">
-                    {Math.round((stats.tasksCompleted / stats.totalTasks) * 100)}% Complete
+                  <p className="text-sm text-gray-500 mt-1">
+                    {stats.totalTasks === 0 ? 'No tasks yet' : `${Math.round((stats.tasksCompleted / stats.totalTasks) * 100)}% Complete`}
                   </p>
                 </div>
                 <CheckSquare className="w-8 h-8 text-green-500" />
@@ -213,7 +209,7 @@ export default function IntranetDashboard() {
               <div className="mt-4 bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(stats.tasksCompleted / stats.totalTasks) * 100}%` }}
+                  style={{ width: stats.totalTasks === 0 ? '0%' : `${(stats.tasksCompleted / stats.totalTasks) * 100}%` }}
                 />
               </div>
             </div>
@@ -224,7 +220,7 @@ export default function IntranetDashboard() {
                 <div>
                   <p className="text-sm text-gray-600">Unread Messages</p>
                   <p className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</p>
-                  <p className="text-sm text-blue-600 mt-1">Requires attention</p>
+                  <p className="text-sm text-gray-500 mt-1">{stats.unreadMessages === 0 ? 'No new messages' : 'Requires attention'}</p>
                 </div>
                 <MessageSquare className="w-8 h-8 text-blue-500" />
               </div>
@@ -266,17 +262,25 @@ export default function IntranetDashboard() {
                 </a>
               </div>
               <div className="space-y-4">
-                {recentActivity.map(activity => (
-                  <div key={activity.id} className="flex items-start space-x-3">
-                    <div className="p-2 bg-gray-100 rounded-full">
-                      <activity.icon className="w-4 h-4 text-gray-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900">{activity.message}</p>
-                      <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                    </div>
+                {recentActivity.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Activity className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-500 text-sm">No recent activity</p>
+                    <p className="text-gray-400 text-xs mt-1">Your activity will appear here</p>
                   </div>
-                ))}
+                ) : (
+                  recentActivity.map(activity => (
+                    <div key={activity.id} className="flex items-start space-x-3">
+                      <div className="p-2 bg-gray-100 rounded-full">
+                        <activity.icon className="w-4 h-4 text-gray-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-900">{activity.message}</p>
+                        <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
@@ -288,28 +292,10 @@ export default function IntranetDashboard() {
                   View calendar
                 </a>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Team Meeting</p>
-                    <p className="text-xs text-gray-500">Today, 2:00 PM</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                  <Target className="w-5 h-5 text-green-600" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Client Call - ABC Corp</p>
-                    <p className="text-xs text-gray-500">Tomorrow, 10:00 AM</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                  <Award className="w-5 h-5 text-purple-600" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Training: Advanced Sales</p>
-                    <p className="text-xs text-gray-500">Friday, 9:00 AM</p>
-                  </div>
-                </div>
+              <div className="text-center py-8">
+                <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500 text-sm">No upcoming events</p>
+                <p className="text-gray-400 text-xs mt-1">Your calendar events will appear here</p>
               </div>
             </div>
           </div>
@@ -324,22 +310,10 @@ export default function IntranetDashboard() {
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </a>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalLeads}</p>
-                  <p className="text-sm text-gray-600">Active Leads</p>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <TrendingUp className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">${stats.thisMonthSales?.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">This Month</p>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <Users className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">8</p>
-                  <p className="text-sm text-gray-600">New Clients</p>
-                </div>
+              <div className="text-center py-8">
+                <Target className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500 text-sm">No CRM data yet</p>
+                <p className="text-gray-400 text-xs mt-1">Leads and sales data will appear here</p>
               </div>
             </div>
           )}
@@ -354,27 +328,10 @@ export default function IntranetDashboard() {
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </a>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                  <Users className="w-6 h-6 text-gray-600 mx-auto mb-2" />
-                  <p className="text-lg font-bold text-gray-900">24</p>
-                  <p className="text-xs text-gray-600">Total Users</p>
-                </div>
-                <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <CheckSquare className="w-6 h-6 text-green-600 mx-auto mb-2" />
-                  <p className="text-lg font-bold text-gray-900">18</p>
-                  <p className="text-xs text-gray-600">Active Users</p>
-                </div>
-                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <FileText className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <p className="text-lg font-bold text-gray-900">156</p>
-                  <p className="text-xs text-gray-600">Tasks Created</p>
-                </div>
-                <div className="text-center p-3 bg-purple-50 rounded-lg">
-                  <Bell className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-                  <p className="text-lg font-bold text-gray-900">3</p>
-                  <p className="text-xs text-gray-600">System Alerts</p>
-                </div>
+              <div className="text-center py-8">
+                <Shield className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500 text-sm">System statistics will appear here</p>
+                <p className="text-gray-400 text-xs mt-1">Data will be populated as your team grows</p>
               </div>
             </div>
           )}

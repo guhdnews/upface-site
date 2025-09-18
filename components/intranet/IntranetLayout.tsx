@@ -193,7 +193,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
             }`}
           >
             <div className="flex items-center space-x-3">
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5 flex-shrink-0" />
               <span className="font-medium">{item.label}</span>
             </div>
             <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -240,8 +240,8 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
       } fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex-shrink-0`}>
         <div className="flex flex-col h-full">
           {/* Logo/Brand */}
-          <div className="flex items-center justify-between px-4 py-6 border-b border-gray-700 flex-shrink-0">
-            <Link href="/intranet" className="flex items-center space-x-2">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700 flex-shrink-0">
+            <Link href="/intranet" className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">U</span>
               </div>
@@ -256,7 +256,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
           </div>
 
           {/* User Info */}
-          <div className="px-4 py-4 border-b border-gray-700 flex-shrink-0">
+          <div className="px-6 py-4 border-b border-gray-700 flex-shrink-0">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                 <User className="w-5 h-5 text-white" />
@@ -269,24 +269,24 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          <nav className="flex-1 px-6 py-4 space-y-1 overflow-y-auto">
             {navigationItems.map(item => renderNavigationItem(item))}
           </nav>
 
           {/* Bottom Actions */}
-          <div className="px-4 py-4 border-t border-gray-700 space-y-2 flex-shrink-0">
+          <div className="px-6 py-4 border-t border-gray-700 space-y-1 flex-shrink-0">
             <Link
               href="/intranet/settings"
-              className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors"
+              className="flex items-center space-x-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors"
             >
-              <Settings className="w-5 h-5" />
+              <Settings className="w-5 h-5 flex-shrink-0" />
               <span>Settings</span>
             </Link>
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors"
+              className="w-full flex items-center space-x-3 px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-5 h-5 flex-shrink-0" />
               <span>Sign Out</span>
             </button>
           </div>
@@ -297,15 +297,15 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header */}
         <header className="lg:hidden bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
-          <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center justify-between px-6 py-4">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-gray-600 hover:text-gray-900"
+              className="flex items-center justify-center p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-lg font-semibold text-gray-900 truncate">{title || 'Intranet'}</h1>
-            <div className="w-6 h-6"></div>
+            <h1 className="text-lg font-semibold text-gray-900 truncate text-center flex-1">{title || 'Dashboard'}</h1>
+            <div className="w-9 h-9"></div>
           </div>
         </header>
 
@@ -314,7 +314,7 @@ export default function IntranetLayout({ children, title }: IntranetLayoutProps)
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="min-w-0 flex-1">
-                {title && <h1 className="text-2xl font-semibold text-gray-900 truncate">{title}</h1>}
+                {title && <h1 className="text-2xl font-semibold text-gray-900 text-center">{title}</h1>}
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
                   <span className="truncate">Welcome back, {user.displayName || user.email}</span>
                   <span>•</span>

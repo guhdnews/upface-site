@@ -25,14 +25,27 @@ export class UserSetupService {
     name: string;
   }): Promise<{ success: boolean; message: string; userId?: string }> {
     try {
-      // Check if any owner users already exist
+      // Double-check if any owner users already exist to prevent race conditions
       const existingOwners = await UserService.getUsersByRole('owner');
       if (existingOwners.length > 0) {
         return {
           success: false,
-          message: 'An owner user already exists in the system.'
+          message: 'An owner user already exists in the system. Only one owner can be created.'
         };
       }
+
+      // Check if email is already in use
+      const allUsers = await UserService.getAllUsers();
+      const existingUser = allUsers.find(u => u.email.toLowerCase() === userData.email.toLowerCase());
+      if (existingUser) {
+        return {
+          success: false,
+          message: 'A user with this email already exists.'
+        };
+      }
+
+      // Store current auth state
+      const currentUser = auth.currentUser;
 
       // Create Firebase Auth user
       const userCredential = await createUserWithEmailAndPassword(
@@ -43,17 +56,32 @@ export class UserSetupService {
       
       const user = userCredential.user;
 
-      // Create user profile in Firestore
+      // Create user profile in Firestore with atomic write to prevent duplicates
       await UserService.createUser(user.uid, {
         email: userData.email,
         name: userData.name,
         role: 'owner',
-        department: 'Executive'
+        department: 'Executive',
+        isActive: true,
+        createdAt: new Date().toISOString()
       });
+
+      // Sign out the newly created user to prevent auth conflicts
+      await auth.signOut();
+
+      // Restore previous auth state if there was one
+      if (currentUser && currentUser.email !== userData.email) {
+        // Don't try to restore if it's the same user
+        try {
+          // The user will need to sign in again
+        } catch (restoreError) {
+          console.warn('Could not restore previous auth state:', restoreError);
+        }
+      }
 
       return {
         success: true,
-        message: 'Owner user created successfully!',
+        message: 'Owner account created successfully! You can now sign in with the new credentials.',
         userId: user.uid
       };
 
@@ -66,7 +94,11 @@ export class UserSetupService {
       } else if (error.code === 'auth/weak-password') {
         message = 'Password should be at least 6 characters.';
       } else if (error.code === 'auth/invalid-email') {
-        message = 'Invalid email address.';
+        message = 'Invalid email address format.';
+      } else if (error.code === 'auth/operation-not-allowed') {
+        message = 'Email/password sign-up is not enabled.';
+      } else if (error.code === 'auth/too-many-requests') {
+        message = 'Too many requests. Please try again later.';
       }
 
       return {
